@@ -57,7 +57,7 @@ void readNode(char *filename) {
             cnt++;
         }
     }
-    printf("%d", cnt);
+//    printf("%d", cnt);
     fclose(fp);
 }
 
@@ -143,28 +143,17 @@ void dij(int startPoint) {
     while (head < tail) {
         int cur = queue[head];
         head++;
-        Edge *tmp = &edges[cur];
+        Edge *tmp = edges[cur].next;
         while (tmp != NULL) {
             if (dist[tmp->to] > dist[cur] + tmp->len) {
-                path[tmp->to] = cur;
                 dist[tmp->to] = dist[cur] + tmp->len;
+                path[tmp->to] = cur;
                 queue[tail] = tmp->to;
                 tail++;
             }
             tmp = tmp->next;
         }
 
-//        for (int i = 0; i < edgeCnt[cur]; i++) {
-//            int next = edges[cur][i].to;
-//            float len = edges[cur][i].len;
-//
-//            if (dist[next] > dist[cur] + len) {
-//                path[next] = cur;
-//                dist[next] = dist[cur] + len;
-//                queue[tail] = next;
-//                tail++;
-//            }
-//        }
     }
     for (int i = 0; i < cnt; i++) {
         printf("%d %f\n", name[i].id, dist[i]);
