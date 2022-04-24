@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "dij.h"
+#include "routeFinding.h"
 
 Node name[5000]; // convert name to index
 int cnt = 0; // number of nodes
@@ -10,8 +10,9 @@ int edgeCnt[5000]; // number of edges
 float dist[5000]; // distance from source
 int path[5000]; // the shortest path
 
-void dij_init(){
-    for(int i = 0; i < 5000; i++){
+
+void dij_init() {
+    for (int i = 0; i < 5000; i++) {
         edgeCnt[i] = 0;
         dist[i] = 0;
         path[i] = -1;
@@ -140,7 +141,25 @@ void dij(int startPoint) {
         }
     }
     for (int i = 0; i < cnt; i++) {
-        printf("%d %f\n", name[i], dist[i]);
+        printf("%d %f\n", name[i].id, dist[i]);
+    }
+}
+
+void floyd(int startPoint) {
+    for (int i = 0; i < 5000; i++) {
+        dist[i] = 10000000;
+    }
+    dist[startPoint] = 0;
+
+    for (int i = 0; i < cnt; i++) {
+        for (int j = 0; j < cnt; j++) {
+            for (int k = 0; k < edgeCnt[j]; k++) {
+                if (dist[j] + nodes[j][k].len < dist[k]) {
+                    dist[k] = dist[j] + nodes[j][k].len;
+                    path[k] = j;
+                }
+            }
+        }
     }
 }
 
@@ -155,6 +174,9 @@ void showPath(int endPoint) {
     printf("\n");
 }
 
+Node* getNodes() {
+    return name;
+}
 //int main() {
 //    readNode("Final_Map.map");
 //    for (int i = 0; i < 5000; i++) {

@@ -13,6 +13,7 @@ typedef struct _Node {
     int lon;
 } Node;
 
+
 void dij_init();
 void readNode(char *filename);
 int findNodeByName(int n);
@@ -22,5 +23,7 @@ void readLink(char *filename);
 void dij(int startPoint);
 float getLen(int endPoint);
 void showPath(int endPoint);
+Node* getNodes();
+void floyd(int startPoint);
 
 #endif //CWK_DIJ_H
