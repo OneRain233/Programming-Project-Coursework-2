@@ -1,9 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <SDL2/SDL.h>
 #include "dij.h"
 
+Node name[5000]; // convert name to index
+int cnt = 0; // number of nodes
+Edge nodes[5000][5000]; // adjacency list
+int edgeCnt[5000]; // number of edges
+float dist[5000]; // distance from source
+int path[5000]; // the shortest path
+
+void dij_init(){
+    for(int i = 0; i < 5000; i++){
+        edgeCnt[i] = 0;
+        dist[i] = 0;
+        path[i] = -1;
+    }
+}
 
 void readNode(char *filename) {
     FILE *fp = fopen(filename, "r");
@@ -16,7 +29,11 @@ void readNode(char *filename) {
         if (strstr(buf, "<node id=") != NULL) {
             // puts(buf);
             char *p = strstr(buf, "id=");
-            name[cnt] = atoi(p + 3);
+            name[cnt].id = atoi(p + 3);
+            p = strstr(buf, "lat=");
+            name[cnt].lat = atof(p + 4);
+            p = strstr(buf, "lon=");
+            name[cnt].lon = atof(p + 4);
             cnt++;
         }
     }
@@ -26,18 +43,18 @@ void readNode(char *filename) {
 
 int findNodeByName(int n) {
     for (int i = 0; i < cnt; i++) {
-        if (name[i] == n) {
+        if (name[i].id == n) {
             return i;
         }
     }
     return -1;
 }
 
-int findNodeByIndex(int idx) { return name[idx]; }
+int findNodeByIndex(int idx) { return name[idx].id; }
 
 void displayNode() {
     for (int i = 0; i < cnt; i++) {
-        printf("%d ", name[i]);
+        printf("%d ", name[i].id);
     }
     printf("\n");
 }
@@ -46,7 +63,7 @@ void displayMap() {
     for (int i = 0; i < cnt; i++) {
         printf("%d: ", findNodeByIndex(i));
         for (int j = 0; j < edgeCnt[i]; j++) {
-            printf("%f ", findNodeByIndex(nodes[i][j].to));
+            printf("%d ", findNodeByIndex(nodes[i][j].to));
         }
         printf("\n");
     }
@@ -138,16 +155,16 @@ void showPath(int endPoint) {
     printf("\n");
 }
 
-int main() {
-    readNode("Final_Map.map");
-    for (int i = 0; i < 5000; i++) {
-        path[i] = -1;
-    }
-    readLink("Final_Map.map");
-    // displayMap();
-    dij(10);
-    printf("start:%d end: %d\n", name[10], name[888]);
-    printf("%f\n", getLen(888));
-    showPath(888);
-    return 0;
-}
+//int main() {
+//    readNode("Final_Map.map");
+//    for (int i = 0; i < 5000; i++) {
+//        path[i] = -1;
+//    }
+//    readLink("Final_Map.map");
+//    // displayMap();
+//    dij(10);
+//    printf("start:%d end: %d\n", name[10], name[888]);
+//    printf("%f\n", getLen(888));
+//    showPath(888);
+//    return 0;
+//}
