@@ -1,24 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <graphviz/cgraph.h>
+#include <SDL2/SDL.h>
+#include "dij.h"
 
-
-const int MAX_CNT = 10000;
-
-typedef struct _Node {
-    int id;
-    int to;
-    float len;
-} Node;
-
-int name[5000];
-int cnt = 0;
-// 邻接表
-Node nodes[5000][5000];
-int edgeCnt[5000];
-float dist[5000];
-int path[5000];
 
 void readNode(char *filename) {
     FILE *fp = fopen(filename, "r");
@@ -27,7 +12,6 @@ void readNode(char *filename) {
         return;
     }
     char buf[1024];
-    //<node id=250857408 lat=53.801851 lon=-1.549185 /node>
     while (fgets(buf, 1024, fp) != NULL) {
         if (strstr(buf, "<node id=") != NULL) {
             // puts(buf);
@@ -43,7 +27,6 @@ void readNode(char *filename) {
 int findNodeByName(int n) {
     for (int i = 0; i < cnt; i++) {
         if (name[i] == n) {
-            // printf("%d\n", i);
             return i;
         }
     }
@@ -118,7 +101,7 @@ void dij(int startPoint) {
     }
     dist[startPoint] = 0;
 
-    int queue[MAX_CNT];
+    int queue[5000 * 2];
     int head = 0;
     int tail = 0;
     queue[tail] = startPoint;
