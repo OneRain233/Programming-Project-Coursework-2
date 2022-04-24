@@ -12,7 +12,7 @@ int main(){
     readNode("Final_Map.map");
     readLink("Final_Map.map");
     // displayMap();
-    floyd(10);
+    dij(10);
     printf("start:%d end: %d\n", findNodeByIndex(10), findNodeByIndex(888));
     printf("%f\n", getLen(888));
     showPath(888);

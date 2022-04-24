@@ -5,6 +5,7 @@ typedef struct _Edge {
     int id;
     int to;
     float len;
+    struct _Edge *next;
 } Edge;
 
 typedef struct _Node {
