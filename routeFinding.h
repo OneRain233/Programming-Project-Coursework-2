@@ -12,7 +12,7 @@ typedef struct _Node {
     int id;
     int lat;
     int lon;
-    struct _Edge *next;
+    struct _Edge *head;
 } Node;
 
 
