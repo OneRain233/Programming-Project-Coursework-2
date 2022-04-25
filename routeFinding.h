@@ -12,6 +12,7 @@ typedef struct _Node {
     int id;
     int lat;
     int lon;
+    struct _Edge *next;
 } Node;
 
 
@@ -25,6 +26,6 @@ void dij(int startPoint);
 float getLen(int endPoint);
 void showPath(int endPoint);
 Node* getNodes();
-void floyd(int startPoint);
+void floyd();
 
 #endif //CWK_DIJ_H

@@ -4,23 +4,21 @@
 #include "routeFinding.h"
 
 Node name[5000]; // convert name to index
-int cnt = 0; // number of edges
-Edge edges[5000]; // adjacency list
-int edgeCnt[5000]; // number of edges
+int cnt = 0; // number of edgesHead
+Edge edgesHead[5000]; // adjacency list
 float dist[5000]; // distance from source
 int path[5000]; // the shortest path
 
 
 void dij_init() {
     for (int i = 0; i < 5000; i++) {
-        edgeCnt[i] = 0;
         dist[i] = 0;
         path[i] = -1;
     }
 }
 
 void insertEdge(int index, int from, int to, float weight) {
-    Edge *cur = &edges[index];
+    Edge *cur = &edgesHead[index];
     Edge *new = malloc(sizeof(Edge));
     new->to = to;
     new->len = weight;
@@ -35,7 +33,6 @@ void insertEdge(int index, int from, int to, float weight) {
         }
         tmp->next = new;
     }
-    edgeCnt[index]++;
 }
 
 void readNode(char *filename) {
@@ -82,7 +79,7 @@ void displayNode() {
 void displayMap() {
     for (int i = 0; i < cnt; i++) {
         printf("%d: ", findNodeByIndex(i));
-        Edge *cur = &edges[i];
+        Edge *cur = &edgesHead[i];
         while (cur != NULL) {
             printf("%d ", cur->to);
             cur = cur->next;
@@ -143,12 +140,12 @@ void dij(int startPoint) {
     while (head < tail) {
         int cur = queue[head];
         head++;
-        Edge *tmp = edges[cur].next;
+        Edge *tmp = edgesHead[cur].next;
         while (tmp != NULL) {
             if (dist[tmp->to] > dist[cur] + tmp->len) {
                 dist[tmp->to] = dist[cur] + tmp->len;
                 path[tmp->to] = cur;
-                queue[tail] = tmp->to;
+                queue[tail] = tmp->to; // q.push(tmp->to);
                 tail++;
             }
             tmp = tmp->next;
@@ -160,23 +157,41 @@ void dij(int startPoint) {
     }
 }
 
-//void floyd(int startPoint) {
-//    for (int i = 0; i < 5000; i++) {
-//        dist[i] = 10000000;
-//    }
-//    dist[startPoint] = 0;
-//
-//    for (int i = 0; i < cnt; i++) {
-//        for (int j = 0; j < cnt; j++) {
-//            for (int k = 0; k < edgeCnt[j]; k++) {
-//                if (dist[j] + edges[j][k].len < dist[k]) {
-//                    dist[k] = dist[j] + edges[j][k].len;
-//                    path[k] = j;
-//                }
-//            }
-//        }
-//    }
-//}
+void floyd() {
+    float map1[cnt + 1][cnt + 1];
+    for (int i = 0; i < cnt; i++) {
+        for (int j = 0; j < cnt; j++) {
+            map1[i][j] = 1000;
+        }
+    }
+    for (int i = 0; i < cnt; i++) {
+        Edge *cur = edgesHead[i].next;
+        while (cur != NULL) {
+            map1[i][cur->to] = cur->len;
+            cur = cur->next;
+        }
+    }
+
+    for (int k = 0; k < cnt; k++) {
+        for (int i = 0; i < cnt; i++) {
+            for (int j = 0; j < cnt; j++) {
+                if (map1[i][k] + map1[k][j] < map1[i][j]) {
+                    map1[i][j] = map1[i][k] + map1[k][j];
+                }
+            }
+        }
+    }
+
+    // display
+    for (int i = 0; i < cnt; i++) {
+        for (int j = 0; j < cnt; j++) {
+            printf("%f ", map1[i][j]);
+        }
+        printf("\n");
+    }
+
+
+}
 
 float getLen(int endPoint) { return dist[endPoint]; }
 
@@ -189,7 +204,7 @@ void showPath(int endPoint) {
     printf("\n");
 }
 
-Node* getNodes() {
+Node *getNodes() {
     return name;
 }
 //int main() {
