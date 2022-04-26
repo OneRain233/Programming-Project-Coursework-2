@@ -17,6 +17,7 @@ typedef struct _Node {
 
 
 void dij_init(char *filename);
+int insertEdge(int index, int to, float weight);
 int getNodesCnt(char *filename);
 int readNode(char *filename);
 int findNodeByName(int n);

@@ -24,13 +24,14 @@ Used to call other modules.
 
 Used to find the shortest way of the graph
 
-| Name                       | Description                                                  |
-| -------------------------- | ------------------------------------------------------------ |
-| dij_init()                 | Used to initialize the Dijkstra                              |
-| readNode()                 | Used to read nodes from the map                              |
-| readLink()                 | Used to read links from the map                              |
-| dij()                      | Used to find the shortest route                              |
-| float getLen(int endPoint) | Used to get the length from the start point to the end point |
+| Name                                            | Description                                                  |
+| ----------------------------------------------- | ------------------------------------------------------------ |
+| dij_init()                                      | Used to initialize the Dijkstra                              |
+| readNode()                                      | Used to read nodes from the map                              |
+| readLink()                                      | Used to read links from the map                              |
+| dij()                                           | Used to find the shortest route                              |
+| float getLen(int endPoint)                      | Used to get the length from the start point to the end point |
+| int insertEdge(int index, int to, float weight) | Used to add edges to the adjacent list                       |
 
 #### Visualization
 
@@ -106,8 +107,8 @@ For the system testing, it means that I should test the complete system which me
 
 <u>Expected behavior:</u>
 
-	1. Read the links from the given file whose file name is `filename` to the variable that stores the edges.
-	1. Convert the given node id to a small id which will be used to find the shortest route.
+1. Read the links from the given file whose file name is `filename` to the variable that stores the edges.
+1. Convert the given node id to a small id which will be used to find the shortest route.
 
 <u>Assertions:</u>
 
@@ -213,6 +214,33 @@ For the system testing, it means that I should test the complete system which me
 ​		Expected result: Display an error message and return `-1`;
 
 
+
+**Function**: `int insertEdge(int index, int to, float weight) `
+
+<u>Expected behavior:</u>
+
+1. Insert the edge from `index`  to `to` with the length `weigth`;
+2. Return `1` if success and `0` fail
+
+<u>Assertions:</u>
+
+1. The `index` is valid
+
+<u>Test cases:</u>
+
+​	C1:
+
+​		Input: A valid `index, to, weight`
+
+​		Expected result: Add the edge from `index` to `to` with length `weigth`;
+
+​	C2:
+
+​		Input: An invalid `index`
+
+​		Expected result: Display an error message and return `0`
+
+  
 
 
 

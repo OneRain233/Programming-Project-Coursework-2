@@ -12,6 +12,10 @@ int *queue;
 void dij_init(char *filename) {
 
     int N = getNodesCnt(filename) * 2;
+    if (N == 0) {
+        fprintf(stderr, "Error: No nodes found\n");
+        exit(1);
+    }
     dist = (float *) malloc(N * sizeof(float));
     path = (int *) malloc(N * sizeof(int));
     nodes = (Node *) malloc(N * sizeof(Node));
@@ -24,8 +28,12 @@ void dij_init(char *filename) {
 }
 
 
-void insertEdge(int index, int from, int to, float weight) {
+int insertEdge(int index, int to, float weight) {
     Node *p = &nodes[index];
+    if (p == NULL) {
+        fprintf(stderr, "Error: Node not found\n");
+        return 0;
+    }
     Edge *e = (Edge *) malloc(sizeof(Edge));
     e->to = to;
     e->len = weight;
@@ -39,6 +47,7 @@ void insertEdge(int index, int from, int to, float weight) {
         }
         q->next = e;
     }
+    return 1;
 }
 
 int getNodesCnt(char *filename) {
@@ -141,8 +150,12 @@ int readLink(char *filename) {
             int node1Idx = findNodeByName(atoi(node1));
             int node2Idx = findNodeByName(atoi(node2));
             float len1 = atof(len);
-            insertEdge(node1Idx, node1Idx, node2Idx, len1);
-            insertEdge(node2Idx, node2Idx, node1Idx, len1);
+            int insertRes1 = insertEdge(node1Idx, node2Idx, len1);
+            int insertRes2 = insertEdge(node2Idx, node1Idx, len1);
+            if (insertRes1 == 0 || insertRes2 == 0) {
+                fprintf(stderr, "insert error\n");
+                exit(1);
+            }
             nodeCnt++;
 
         }
