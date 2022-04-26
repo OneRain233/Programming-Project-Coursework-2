@@ -24,12 +24,13 @@ Used to call other modules.
 
 Used to find the shortest way of the graph
 
-| Name       | Description                     |
-| ---------- | ------------------------------- |
-| dij_init() | Used to initialize the Dijkstra |
-| readNode() | Used to read nodes from the map |
-| readLink() | Used to read links from the map |
-| dij()      | Used to find the shortest route |
+| Name                       | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| dij_init()                 | Used to initialize the Dijkstra                              |
+| readNode()                 | Used to read nodes from the map                              |
+| readLink()                 | Used to read links from the map                              |
+| dij()                      | Used to find the shortest route                              |
+| float getLen(int endPoint) | Used to get the length from the start point to the end point |
 
 #### Visualization
 
@@ -53,10 +54,11 @@ For the system testing, it means that I should test the complete system which me
 
 **Function** : `int dij_init();`
 
-<u>Expected behaviour:</u>
+<u>Expected behavior:</u>
 
-   				1. The value of `dist` array is set to `0`;
-   				2. the value of `path` array is set to `-1`;
+1. The value of `dist` array is set to `0`;
+2. the value of `path` array is set to `-1`;
+3. The variables `dist`, `path`, `nodes` and `queue` should be allocated.
 
 <u>Assertions:</u>
 
@@ -64,21 +66,19 @@ For the system testing, it means that I should test the complete system which me
 
 <u>Test cases:</u>
 
-​	C1:
+​		C1:
 
-​			Input: No input
+​				Input: No input
 
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
-
-
+​				Expected result: The value of element of dist is set to `0` and the value of elements of path is set to `-1`; The variables 				should be allocated
 
 
 
 **Function** : `void readNode(char *filename);`
 
-<u>Expected behaviour:</u>
+<u>Expected behavior:</u>
 
-   				1. Read the nodes from the given file whose file name is `filename` to the variable which stores the nodes.
+1. Read the nodes from the given file whose file name is filename to the variable which stores the nodes.
 
 <u>Assertions:</u>
 
@@ -90,13 +90,13 @@ For the system testing, it means that I should test the complete system which me
 
 ​			Input: A normal file name 
 
-​			Expected result: All the nodes will be stored to the variable.
+​			Expected result: All the nodes will be stored to the variable and return `1`
 
 ​	C2: 
 
 ​			Input: A NULL file name
 
-​			Expect result: Display an error message and exit with status 1			
+​			Expect result: Display an error message and return `0`
 
 
 
@@ -104,157 +104,119 @@ For the system testing, it means that I should test the complete system which me
 
 **Function** : `void readLink(char *filename);`
 
-<u>Expected behaviour:</u>
+<u>Expected behavior:</u>
 
-   				1. Read the links from the given file whose file name is `filename` to the variable that stores the edges.
+	1. Read the links from the given file whose file name is `filename` to the variable that stores the edges.
+	1. Convert the given node id to a small id which will be used to find the shortest route.
 
 <u>Assertions:</u>
 
-1. No input
+1. The file name pointer `filename` is not NULL
 
 <u>Test cases:</u>
 
 ​	C1:
 
-​			Input: No input
+​			Input: A normal file name
 
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+​			Expected result: The links are stored to the struct and return `1`;
+
+​	C2:
+
+​			Input: A NULL file name
+
+​			Expect result: Display an error message and return `0`;
 
 
 
 
 
-**Function** : `int dij_init();`
+**Function**: `int getNodesCnt(char *filename);`
 
-<u>Expected behaviour:</u>
+<u>Expected behavior:</u>
 
-   				1. The value of `dist` array is set to `0`;
-   				2. the value of `path` array is set to `-1`;
+1. Read the file and count the number of nodes;
+2. Return the number of the nodes.
 
 <u>Assertions:</u>
 
-1. No input
+1. The file name pointer `filename` is not NULL
 
 <u>Test cases:</u>
 
 ​	C1:
 
-​			Input: No input
+​		Input: A normal file name;
 
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+​		Expected result: Count the number of nodes and return the count;
+
+​	C2:
+
+​		Input: A NULL file name:
+
+​		Expected result: Display an error message and return `0`
 
 
 
+**Function**: `void dij(int startPoint)`
 
+<u>Expected behavior:</u>
 
-**Function** : `int dij_init();`
-
-<u>Expected behaviour:</u>
-
-   				1. The value of `dist` array is set to `0`;
-   				2. the value of `path` array is set to `-1`;
+1. Find the shortest route from the start point;
+2. Record the path of shortest route
+3. Calculate the shortest way to each point from the start point;
 
 <u>Assertions:</u>
 
-1. No input
+1. The start point is valid.
+
+<u>Test cases:</u>
+
+​	C1: 
+
+​		Input: A valid start point like `10`;
+
+​		Expect result:  The program should compute the shortest route from the start point and store it in the `dist` variable. The 		path to each point should be record to the `path` variable.
+
+​	C2:
+
+​		Input: An invalid start  point `-1`;
+
+​		Expect result: Display an error message and return
+
+
+
+
+
+**Function**: `float getLen(int endPoint);`
+
+<u>Expected behavior:</u>
+
+1. Return the shortest length from the start point to the end point.
+
+<u>Assertions:</u>
+
+1. The end point is valid 
 
 <u>Test cases:</u>
 
 ​	C1:
 
-​			Input: No input
+​		Input: A valid end point like `10`;
 
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+​		Expected result: The function should return the shortest length from the start point and end point;
 
+​	C2: 
 
+​		Input: An invalid end point like `-1`
 
-
-
-**Function** : `int dij_init();`
-
-<u>Expected behaviour:</u>
-
-   				1. The value of `dist` array is set to `0`;
-   				2. the value of `path` array is set to `-1`;
-
-<u>Assertions:</u>
-
-1. No input
-
-<u>Test cases:</u>
-
-​	C1:
-
-​			Input: No input
-
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+​		Expected result: Display an error message and return `-1`;
 
 
 
 
 
-**Function** : `int dij_init();`
-
-<u>Expected behaviour:</u>
-
-   				1. The value of `dist` array is set to `0`;
-   				2. the value of `path` array is set to `-1`;
-
-<u>Assertions:</u>
-
-1. No input
-
-<u>Test cases:</u>
-
-​	C1:
-
-​			Input: No input
-
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+​		
 
 
-
-
-
-**Function** : `int dij_init();`
-
-<u>Expected behaviour:</u>
-
-   				1. The value of `dist` array is set to `0`;
-   				2. the value of `path` array is set to `-1`;
-
-<u>Assertions:</u>
-
-1. No input
-
-<u>Test cases:</u>
-
-​	C1:
-
-​			Input: No input
-
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
-
-
-
-
-
-**Function** : `int dij_init();`
-
-<u>Expected behaviour:</u>
-
-   				1. The value of `dist` array is set to `0`;
-   				2. the value of `path` array is set to `-1`;
-
-<u>Assertions:</u>
-
-1. No input
-
-<u>Test cases:</u>
-
-​	C1:
-
-​			Input: No input
-
-​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
 

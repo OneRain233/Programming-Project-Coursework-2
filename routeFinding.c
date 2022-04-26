@@ -7,7 +7,7 @@ Node *nodes; // convert nodes to index
 int cnt = 0; // number of edgesHead
 float *dist; // distance from source
 int *path; // the shortest path
-
+int *queue;
 
 void dij_init(char *filename) {
 
@@ -15,6 +15,7 @@ void dij_init(char *filename) {
     dist = (float *) malloc(N * sizeof(float));
     path = (int *) malloc(N * sizeof(int));
     nodes = (Node *) malloc(N * sizeof(Node));
+    queue = (int *) malloc(N * sizeof(int));
     for (int i = 0; i < N; i++) {
         dist[i] = 10000000;
         path[i] = -1;
@@ -42,6 +43,10 @@ void insertEdge(int index, int from, int to, float weight) {
 
 int getNodesCnt(char *filename) {
     FILE *fp = fopen(filename, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "File open error");
+        return 0;
+    }
     int NodeCnt = 0;
     char line[100];
     while (fgets(line, 100, fp) != NULL) {
@@ -53,11 +58,11 @@ int getNodesCnt(char *filename) {
     return NodeCnt;
 }
 
-void readNode(char *filename) {
+int readNode(char *filename) {
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
         printf("open file error\n");
-        return;
+        return 0;
     }
     char buf[1024];
     while (fgets(buf, 1024, fp) != NULL) {
@@ -74,6 +79,7 @@ void readNode(char *filename) {
     }
 //    printf("%d", cnt);
     fclose(fp);
+    return 1;
 }
 
 int findNodeByName(int n) {
@@ -108,12 +114,12 @@ void displayMap() {
 }
 
 
-void readLink(char *filename) {
+int readLink(char *filename) {
     int nodeCnt = 0;
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
         printf("File not found\n");
-        exit(1);
+        return 0;
     }
     while (!feof(fp)) {
         char id[20] = {0};
@@ -141,13 +147,17 @@ void readLink(char *filename) {
 
         }
     }
+    fclose(fp);
+    return 1;
 
 }
 
 void dij(int startPoint) {
+    if (startPoint < 0) {
+        return;
+    }
     dist[startPoint] = 0;
 
-    int queue[5000 * 2];
     int head = 0;
     int tail = 0;
     queue[tail] = startPoint;
@@ -176,7 +186,13 @@ void dij(int startPoint) {
     }
 }
 
-float getLen(int endPoint) { return dist[endPoint]; }
+float getLen(int endPoint) {
+    if (endPoint < 0) {
+        return -1;
+    } else {
+        return dist[endPoint];
+    }
+}
 
 void showPath(int endPoint) {
     int cur = endPoint;

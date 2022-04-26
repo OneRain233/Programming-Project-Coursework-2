@@ -14,8 +14,8 @@ int main(){
     // displayMap();
     dij(10);
     printf("start:%d end: %d\n", findNodeByIndex(10), findNodeByIndex(888));
-    printf("%f\n", getLen(888));
-    showPath(888);
+    printf("%f\n", getLen(-1));
+//    showPath(888);
     const Node *n = getNodes();
 //
 //    SDL_Renderer *renderer = NULL;

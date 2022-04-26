@@ -18,11 +18,11 @@ typedef struct _Node {
 
 void dij_init(char *filename);
 int getNodesCnt(char *filename);
-void readNode(char *filename);
+int readNode(char *filename);
 int findNodeByName(int n);
 int findNodeByIndex(int idx);
 void displayMap();
-void readLink(char *filename);
+int readLink(char *filename);
 void dij(int startPoint);
 float getLen(int endPoint);
 void showPath(int endPoint);
