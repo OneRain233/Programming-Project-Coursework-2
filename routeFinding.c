@@ -3,17 +3,23 @@
 #include <string.h>
 #include "routeFinding.h"
 
-Node nodes[5000]; // convert nodes to index
+Node *nodes; // convert nodes to index
 int cnt = 0; // number of edgesHead
-float dist[5000]; // distance from source
-int path[5000]; // the shortest path
+float *dist; // distance from source
+int *path; // the shortest path
 
 
-void dij_init() {
-    for (int i = 0; i < 5000; i++) {
-        dist[i] = 0;
+void dij_init(char *filename) {
+
+    int N = getNodesCnt(filename) * 2;
+    dist = (float *) malloc(N * sizeof(float));
+    path = (int *) malloc(N * sizeof(int));
+    nodes = (Node *) malloc(N * sizeof(Node));
+    for (int i = 0; i < N; i++) {
+        dist[i] = 10000000;
         path[i] = -1;
     }
+
 }
 
 
@@ -32,6 +38,19 @@ void insertEdge(int index, int from, int to, float weight) {
         }
         q->next = e;
     }
+}
+
+int getNodesCnt(char *filename) {
+    FILE *fp = fopen(filename, "r");
+    int NodeCnt = 0;
+    char line[100];
+    while (fgets(line, 100, fp) != NULL) {
+        if (strstr(line, "<node id=") != NULL) {
+            NodeCnt++;
+        }
+    }
+    fclose(fp);
+    return NodeCnt;
 }
 
 void readNode(char *filename) {
@@ -126,9 +145,6 @@ void readLink(char *filename) {
 }
 
 void dij(int startPoint) {
-    for (int i = 0; i < 5000; i++) {
-        dist[i] = 10000000;
-    }
     dist[startPoint] = 0;
 
     int queue[5000 * 2];
@@ -159,42 +175,6 @@ void dij(int startPoint) {
         printf("%d %f\n", nodes[i].id, dist[i]);
     }
 }
-
-//void floyd() {
-//    float map1[cnt + 1][cnt + 1];
-//    for (int i = 0; i < cnt; i++) {
-//        for (int j = 0; j < cnt; j++) {
-//            map1[i][j] = 1000;
-//        }
-//    }
-//    for (int i = 0; i < cnt; i++) {
-//        Edge *cur = edgesHead[i].next;
-//        while (cur != NULL) {
-//            map1[i][cur->to] = cur->len;
-//            cur = cur->next;
-//        }
-//    }
-//
-//    for (int k = 0; k < cnt; k++) {
-//        for (int i = 0; i < cnt; i++) {
-//            for (int j = 0; j < cnt; j++) {
-//                if (map1[i][k] + map1[k][j] < map1[i][j]) {
-//                    map1[i][j] = map1[i][k] + map1[k][j];
-//                }
-//            }
-//        }
-//    }
-//
-//    // display
-//    for (int i = 0; i < cnt; i++) {
-//        for (int j = 0; j < cnt; j++) {
-//            printf("%f ", map1[i][j]);
-//        }
-//        printf("\n");
-//    }
-//
-//
-//}
 
 float getLen(int endPoint) { return dist[endPoint]; }
 

@@ -49,5 +49,212 @@ For the Integration testing, it will test the logic of some functions, which mea
 
 For the system testing, it means that I should test the complete system which means that a map file is given to the system and it will output the specific shortest route based on the input of users including the start point and the end point. Then test if the system will display the graph correctly.
 
- 
+### Tests cases
+
+**Function** : `int dij_init();`
+
+<u>Expected behaviour:</u>
+
+   				1. The value of `dist` array is set to `0`;
+   				2. the value of `path` array is set to `-1`;
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+
+
+
+
+
+**Function** : `void readNode(char *filename);`
+
+<u>Expected behaviour:</u>
+
+   				1. Read the nodes from the given file whose file name is `filename` to the variable which stores the nodes.
+
+<u>Assertions:</u>
+
+1. The file name pointer `filename` is not NULL
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: A normal file name 
+
+​			Expected result: All the nodes will be stored to the variable.
+
+​	C2: 
+
+​			Input: A NULL file name
+
+​			Expect result: Display an error message and exit with status 1			
+
+
+
+
+
+**Function** : `void readLink(char *filename);`
+
+<u>Expected behaviour:</u>
+
+   				1. Read the links from the given file whose file name is `filename` to the variable that stores the edges.
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+
+
+
+
+
+**Function** : `int dij_init();`
+
+<u>Expected behaviour:</u>
+
+   				1. The value of `dist` array is set to `0`;
+   				2. the value of `path` array is set to `-1`;
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+
+
+
+
+
+**Function** : `int dij_init();`
+
+<u>Expected behaviour:</u>
+
+   				1. The value of `dist` array is set to `0`;
+   				2. the value of `path` array is set to `-1`;
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+
+
+
+
+
+**Function** : `int dij_init();`
+
+<u>Expected behaviour:</u>
+
+   				1. The value of `dist` array is set to `0`;
+   				2. the value of `path` array is set to `-1`;
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+
+
+
+
+
+**Function** : `int dij_init();`
+
+<u>Expected behaviour:</u>
+
+   				1. The value of `dist` array is set to `0`;
+   				2. the value of `path` array is set to `-1`;
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+
+
+
+
+
+**Function** : `int dij_init();`
+
+<u>Expected behaviour:</u>
+
+   				1. The value of `dist` array is set to `0`;
+   				2. the value of `path` array is set to `-1`;
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
+
+
+
+
+
+**Function** : `int dij_init();`
+
+<u>Expected behaviour:</u>
+
+   				1. The value of `dist` array is set to `0`;
+   				2. the value of `path` array is set to `-1`;
+
+<u>Assertions:</u>
+
+1. No input
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: No input
+
+​			Expected result: The value of element of dist is set to `0` and the value oe 			elements of path is set to `-1`;
 

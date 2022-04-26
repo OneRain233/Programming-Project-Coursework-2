@@ -8,7 +8,7 @@
 #include "visualization.h"
 
 int main(){
-    dij_init();
+    dij_init("Final_Map.map");
     readNode("Final_Map.map");
     readLink("Final_Map.map");
     // displayMap();
