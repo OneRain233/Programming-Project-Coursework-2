@@ -7,16 +7,16 @@ Node *nodes; // convert nodes to index
 int cnt = 0; // number of edgesHead
 long double *dist; // distance from source
 int *path; // the shortest path
-int *queue;
-long double maxLat = -1e8;
-long double maxLon = -1e8;
-long double minLat = 1e8;
-long double minLon = 1e8;
+int *queue; // queue
+long double maxLat = -1e8; // max latitude
+long double maxLon = -1e8; // max longitude
+long double minLat = 1e8; // min latitude
+long double minLon = 1e8; // min longitude
 int edgeCnt = 0;
 
 void dijInit(char *filename) {
 
-    int N = getNodesCnt(filename)  * 4;
+    int N = getNodesCnt(filename) * 4;
     if (N == 0) {
         fprintf(stderr, "Error: No nodes found\n");
         exit(1);
@@ -75,7 +75,7 @@ int getNodesCnt(char *filename) {
 int readNode(char *filename) {
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
-        printf("open file error\n");
+        fprintf(stderr, "open file error\n");
         return 0;
     }
     char buf[1024];
@@ -89,10 +89,10 @@ int readNode(char *filename) {
             p = strstr(buf, "lon=");
             nodes[cnt].lon = atof(p + 4);
             cnt++;
-            if(nodes[cnt].lat > maxLat) maxLat = nodes[cnt].lat;
-            if(nodes[cnt].lat < minLat) minLat = nodes[cnt].lat;
-            if(nodes[cnt].lon > maxLon) maxLon = nodes[cnt].lon;
-            if(nodes[cnt].lon < minLon) minLon = nodes[cnt].lon;
+            if (nodes[cnt].lat > maxLat) maxLat = nodes[cnt].lat;
+            if (nodes[cnt].lat < minLat) minLat = nodes[cnt].lat;
+            if (nodes[cnt].lon > maxLon) maxLon = nodes[cnt].lon;
+            if (nodes[cnt].lon < minLon) minLon = nodes[cnt].lon;
 
         }
     }
@@ -113,17 +113,17 @@ int findNodeByIndex(int idx) { return nodes[idx].id; }
 
 void displayNode() {
     for (int i = 0; i < cnt; i++) {
-        printf("%d ", nodes[i].id);
+        fprintf(stdout, "%d ", nodes[i].id);
     }
-    printf("\n");
+    fprintf(stdout, "\n");
 }
 
 void displayMap() {
     for (int i = 0; i < cnt; i++) {
-        printf("%d ", nodes[i].id);
+        fprintf(stdout, "%d ", nodes[i].id);
         Edge *p = nodes[i].head;
         while (p != NULL) {
-            printf("%d ", p->to);
+            fprintf(stdout, "%d ", p->to);
             p = p->next;
         }
 
@@ -136,7 +136,7 @@ int readLink(char *filename) {
     int nodeCnt = 0;
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
-        printf("File not found\n");
+        fprintf(stderr, "File not found\n");
         return 0;
     }
     while (!feof(fp)) {
@@ -216,14 +216,14 @@ void bellman(int startPoint) {
     dist[startPoint] = 0;
     int flag = 0;
 
-    for(int i = 0; i < edgeCnt; i++) {
+    for (int i = 0; i < edgeCnt; i++) {
         flag = 0;
-        for(int j = 0; j < cnt; j ++) {
+        for (int j = 0; j < cnt; j++) {
             Edge *p = nodes[j].head;
-            while(p != NULL) {
+            while (p != NULL) {
                 int next = p->to;
                 long double len = p->len;
-                if(dist[next] > dist[j] + len) {
+                if (dist[next] > dist[j] + len) {
                     dist[next] = dist[j] + len;
                     path[next] = j;
                     flag = 1;
@@ -232,7 +232,7 @@ void bellman(int startPoint) {
             }
 
         }
-        if(flag == 0) break;
+        if (flag == 0) break;
     }
 
 
@@ -249,7 +249,7 @@ long double getLen(int endPoint) {
 void showPath(int endPoint) {
     int cur = endPoint;
     while (cur != -1) {
-        printf("%d ", nodes[cur].id);
+        fprintf(stdout, "%d ", nodes[cur].id);
         cur = path[cur];
     }
     printf("\n");

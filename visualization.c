@@ -45,12 +45,9 @@ void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
             int y_next = (int) y_pos_next;
             SDL_RenderDrawLine(renderer, y + (int) (pointSize) / 2, x + (int) (pointSize) / 2,
                                y_next + (int) (pointSize) / 2, x_next + (int) (pointSize) / 2);
-
             cur = cur->next;
-
         }
     }
-
 
     int cur = endPoint;
     int prev = cur;
@@ -70,14 +67,10 @@ void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
         SDL_RenderDrawLine(renderer, y_cur + (int) (pointSize) / 2, x_cur + (int) (pointSize) / 2,
                            y_prev + (int) (pointSize) / 2,
                            x_prev + (int) (pointSize) / 2);
-//        printf("%d, %d -> %d, %d\n", x_cur, y_cur, x_prev, y_prev);
-
         prev = cur;
         cur = path[cur];
     }
-
 }
-
 
 void update(SDL_Window *window, SDL_Renderer *renderer,
             Node *nodes, int *path, int node_cnt, long double baseX,
@@ -97,7 +90,7 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
     long double pointSize = 3;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return 1;
     }
 
@@ -117,13 +110,9 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
                 if (event.wheel.y > 0) {
                     scale -= 0.3;
                     pointSize += 0.2;
-                    printf("%Lf\n", pointSize);
-//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
-//                           pointSize);
                 } else if (event.wheel.y < 0) {
                     scale += 0.3;
                     pointSize -= 0.2;
-                    printf("%Lf\n", pointSize);
 
                 }
                 update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
@@ -143,46 +132,29 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.keysym.sym == SDLK_LEFT) {
                     offsetY += 100;
-//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
-//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_RIGHT) {
                     offsetY -= 100;
-//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
-//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_UP) {
                     offsetX += 100;
-//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
-//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_DOWN) {
                     offsetX -= 100;
-//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
-//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     quit = 1;
-//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
-//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_F1) {
                     scale += 1;
-//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
-//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_F2) {
                     scale -= 1;
-
                 }
                 update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
                        pointSize);
             }
         }
 
-
-//        SDL_Delay(1);
     }
-
-
 }
