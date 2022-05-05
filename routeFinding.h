@@ -30,5 +30,6 @@ void showPath(int endPoint);
 Node* getNodes();
 void floyd();
 int getNodeCnt();
+int *getPath();
 
 #endif //CWK_DIJ_H

@@ -8,8 +8,10 @@ int cnt = 0; // number of edgesHead
 long double *dist; // distance from source
 int *path; // the shortest path
 int *queue;
-long double maxLat;
-long double maxLon;
+long double maxLat = -1e8;
+long double maxLon = -1e8;
+long double minLat = 1e8;
+long double minLon = 1e8;
 
 void dijInit(char *filename) {
 
@@ -23,7 +25,7 @@ void dijInit(char *filename) {
     nodes = (Node *) malloc(N * sizeof(Node));
     queue = (int *) malloc(N * sizeof(int));
     for (int i = 0; i < N; i++) {
-        dist[i] = (long double)10000000.0;
+        dist[i] = (long double) 10000000.0;
         path[i] = -1;
     }
 
@@ -87,7 +89,10 @@ int readNode(char *filename) {
             nodes[cnt].lon = atof(p + 4);
             cnt++;
             if(nodes[cnt].lat > maxLat) maxLat = nodes[cnt].lat;
+            if(nodes[cnt].lat < minLat) minLat = nodes[cnt].lat;
             if(nodes[cnt].lon > maxLon) maxLon = nodes[cnt].lon;
+            if(nodes[cnt].lon < minLon) minLon = nodes[cnt].lon;
+
         }
     }
     fclose(fp);
@@ -220,6 +225,10 @@ void showPath(int endPoint) {
     printf("\n");
 }
 
+int *getPath() {
+    return path;
+}
+
 Node *getNodes() {
     return nodes;
 }
@@ -227,3 +236,4 @@ Node *getNodes() {
 int getNodeCnt() {
     return cnt;
 }
+
