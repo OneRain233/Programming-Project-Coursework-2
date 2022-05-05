@@ -43,9 +43,11 @@ void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
                          offsetY, scale);
             int x_next = (int) x_pos_next;
             int y_next = (int) y_pos_next;
-            SDL_RenderDrawLine(renderer, y + 2, x + 2, y_next + 2, x_next + 2);
+            SDL_RenderDrawLine(renderer, y + (int) (pointSize) / 2, x + (int) (pointSize) / 2,
+                               y_next + (int) (pointSize) / 2, x_next + (int) (pointSize) / 2);
 
             cur = cur->next;
+
         }
     }
 
@@ -114,13 +116,13 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
             if (event.type == SDL_MOUSEWHEEL) {
                 if (event.wheel.y > 0) {
                     scale -= 0.3;
-                    pointSize += 0.3;
+                    pointSize += 0.2;
                     printf("%Lf\n", pointSize);
 //                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
 //                           pointSize);
                 } else if (event.wheel.y < 0) {
                     scale += 0.3;
-                    pointSize -= 0.3;
+                    pointSize -= 0.2;
                     printf("%Lf\n", pointSize);
 
                 }

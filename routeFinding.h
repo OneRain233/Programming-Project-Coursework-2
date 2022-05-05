@@ -31,5 +31,6 @@ Node* getNodes();
 void floyd();
 int getNodeCnt();
 int *getPath();
+void bellman(int startPoint);
 
 #endif //CWK_DIJ_H

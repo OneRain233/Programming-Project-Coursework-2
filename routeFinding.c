@@ -12,6 +12,7 @@ long double maxLat = -1e8;
 long double maxLon = -1e8;
 long double minLat = 1e8;
 long double minLon = 1e8;
+int edgeCnt = 0;
 
 void dijInit(char *filename) {
 
@@ -166,6 +167,7 @@ int readLink(char *filename) {
                 exit(1);
             }
             nodeCnt++;
+            edgeCnt++;
 
         }
     }
@@ -205,6 +207,35 @@ void dij(int startPoint) {
 //    for (int i = 0; i < cnt; i++) {
 //        printf("%Lf ", dist[i]);
 //    }
+}
+
+void bellman(int startPoint) {
+    if (startPoint < 0) {
+        return;
+    }
+    dist[startPoint] = 0;
+    int flag = 0;
+
+    for(int i = 0; i < edgeCnt; i++) {
+        flag = 0;
+        for(int j = 0; j < cnt; j ++) {
+            Edge *p = nodes[j].head;
+            while(p != NULL) {
+                int next = p->to;
+                long double len = p->len;
+                if(dist[next] > dist[j] + len) {
+                    dist[next] = dist[j] + len;
+                    path[next] = j;
+                    flag = 1;
+                }
+                p = p->next;
+            }
+
+        }
+        if(flag == 0) break;
+    }
+
+
 }
 
 long double getLen(int endPoint) {
