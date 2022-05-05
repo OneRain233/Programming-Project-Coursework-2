@@ -16,7 +16,8 @@ void calcPosition(long double x, long double y, long double *x_pos, long double 
 
 void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
                Node *nodes, const int *path, int node_cnt, long double baseX,
-               long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale) {
+               long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
+               long double pointSize) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // white
     SDL_RenderClear(renderer); // clear screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black
@@ -27,7 +28,7 @@ void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
         calcPosition(nodes[i].lat, nodes[i].lon, x_pos, y_pos, baseX, baseY, offsetX, offsetY, scale);
         int x = (int) *x_pos;
         int y = (int) *y_pos;
-        SDL_Rect rect = {y, x, 5, 5};
+        SDL_Rect rect = {y, x, (int) pointSize, (int) pointSize};
         SDL_RenderFillRect(renderer, &rect);
 
         free(x_pos);
@@ -64,7 +65,9 @@ void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
         int y_prev = (int) prev_y;
         // red
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
-        SDL_RenderDrawLine(renderer, y_cur + 2, x_cur + 2, y_prev + 2, x_prev + 2);
+        SDL_RenderDrawLine(renderer, y_cur + (int) (pointSize) / 2, x_cur + (int) (pointSize) / 2,
+                           y_prev + (int) (pointSize) / 2,
+                           x_prev + (int) (pointSize) / 2);
 //        printf("%d, %d -> %d, %d\n", x_cur, y_cur, x_prev, y_prev);
 
         prev = cur;
@@ -76,8 +79,9 @@ void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
 
 void update(SDL_Window *window, SDL_Renderer *renderer,
             Node *nodes, int *path, int node_cnt, long double baseX,
-            long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale) {
-    drawPoint(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+            long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
+            long double pointSize) {
+    drawPoint(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
     SDL_RenderPresent(renderer);
 }
 
@@ -88,6 +92,7 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
     long double offsetX = -200;
     long double offsetY = -200;
     long double scale = 10;
+    long double pointSize = 3;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -97,7 +102,7 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
     window = SDL_CreateWindow("Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               2560, 1080, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
 
     while (!quit) {
         SDL_Event event;
@@ -109,18 +114,26 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
             if (event.type == SDL_MOUSEWHEEL) {
                 if (event.wheel.y > 0) {
                     scale -= 0.3;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                    pointSize += 0.3;
+                    printf("%Lf\n", pointSize);
+//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+//                           pointSize);
                 } else if (event.wheel.y < 0) {
                     scale += 0.3;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                    pointSize -= 0.3;
+                    printf("%Lf\n", pointSize);
+
                 }
+                update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+                       pointSize);
             }
 
 
             if (event.type == SDL_MOUSEMOTION && event.motion.state == SDL_PRESSED) {
                 offsetY += event.motion.xrel;
                 offsetX += event.motion.yrel;
-                update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+                       pointSize);
 
             }
 
@@ -128,32 +141,40 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.keysym.sym == SDLK_LEFT) {
                     offsetY += 100;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_RIGHT) {
                     offsetY -= 100;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_UP) {
                     offsetX += 100;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_DOWN) {
                     offsetX -= 100;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     quit = 1;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_F1) {
                     scale += 1;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+//                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+//                           pointSize);
                 }
                 if (event.key.keysym.sym == SDLK_F2) {
                     scale -= 1;
-                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+
                 }
+                update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale,
+                       pointSize);
             }
         }
 
