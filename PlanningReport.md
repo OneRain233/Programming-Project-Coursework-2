@@ -24,14 +24,14 @@ Used to call other modules.
 
 Used to find the shortest way of the graph
 
-| Name                                            | Description                                                  |
-| ----------------------------------------------- | ------------------------------------------------------------ |
-| dij_init()                                      | Used to initialize the Dijkstra                              |
-| readNode()                                      | Used to read nodes from the map                              |
-| readLink()                                      | Used to read links from the map                              |
-| dij()                                           | Used to find the shortest route                              |
-| float getLen(int endPoint)                      | Used to get the length from the start point to the end point |
-| int insertEdge(int index, int to, float weight) | Used to add edges to the adjacent list                       |
+| Name                                                  | Description                                                  |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| dijInit()                                            | Used to initialize the Dijkstra                              |
+| readNode()                                            | Used to read nodes from the map                              |
+| readLink()                                            | Used to read links from the map                              |
+| dij()                                                 | Used to find the shortest route                              |
+| long double getLen(int endPoint)                      | Used to get the length from the start point to the end point |
+| int insertEdge(int index, int to, long double weight) | Used to add edges to the adjacent list                       |
 
 #### Visualization
 
@@ -53,7 +53,7 @@ For the system testing, it means that I should test the complete system which me
 
 ### Tests cases
 
-**Function** : `int dij_init();`
+**Function** : `int dijInit();`
 
 <u>Expected behavior:</u>
 
@@ -75,11 +75,13 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function** : `void readNode(char *filename);`
+**Function** : `int readNode(char *filename);`
 
 <u>Expected behavior:</u>
 
 1. Read the nodes from the given file whose file name is filename to the variable which stores the nodes.
+   1. If success, return `1`, if fail, return `0`;
+
 
 <u>Assertions:</u>
 
@@ -189,7 +191,7 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function**: `float getLen(int endPoint);`
+**Function**: `long double getLen(int endPoint);`
 
 <u>Expected behavior:</u>
 
@@ -215,7 +217,7 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function**: `int insertEdge(int index, int to, float weight) `
+**Function**: `int insertEdge(int index, int to, long double weight) `
 
 <u>Expected behavior:</u>
 
@@ -240,11 +242,15 @@ For the system testing, it means that I should test the complete system which me
 
 ​		Expected result: Display an error message and return `0`
 
-  
 
 
 
-​		
 
+# Schedule
 
+| Date | What should I do |
+| ---- | ---------------- |
+|      |                  |
+|      |                  |
+|      |                  |
 

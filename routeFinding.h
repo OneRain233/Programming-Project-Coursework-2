@@ -4,20 +4,20 @@
 typedef struct _Edge {
     int id;
     int to;
-    float len;
+    long double len;
     struct _Edge *next;
 } Edge;
 
 typedef struct _Node {
     int id;
-    int lat;
-    int lon;
+    long double lat;
+    long double lon;
     struct _Edge *head;
 } Node;
 
 
-void dij_init(char *filename);
-int insertEdge(int index, int to, float weight);
+void dijInit(char *filename);
+int insertEdge(int index, int to, long double weight);
 int getNodesCnt(char *filename);
 int readNode(char *filename);
 int findNodeByName(int n);
@@ -25,9 +25,10 @@ int findNodeByIndex(int idx);
 void displayMap();
 int readLink(char *filename);
 void dij(int startPoint);
-float getLen(int endPoint);
+long double getLen(int endPoint);
 void showPath(int endPoint);
 Node* getNodes();
 void floyd();
+int getNodeCnt();
 
 #endif //CWK_DIJ_H

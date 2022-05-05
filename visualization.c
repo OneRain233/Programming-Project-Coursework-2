@@ -4,27 +4,62 @@
 
 #include "visualization.h"
 #include "routeFinding.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include "SDL2/SDL.h"
 
-void visual_init(SDL_Renderer* renderer){
-    SDL_Window *window = NULL;
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-        fprintf(stderr, "SDL_Init: %s\n", SDL_GetError());
 
-    atexit(SDL_Quit); // set for clean-up on exit
-    SDL_CreateWindowAndRenderer(800, 480, 0, &window, &renderer);
-    SDL_SetWindowTitle( window, "SDL2 Window" );
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderClear(renderer);
-    SDL_RenderPresent(renderer);
-}
 
-void render_nodes(SDL_Renderer* renderer, const Node* nodes, int size){
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    for(int i = 0; i < size; i++){
-        printf("%d\n", nodes[i].id);
-        SDL_RenderDrawPoint(renderer, nodes[i].lat % 800, nodes[i].lon / 800);
+int visualize(SDL_Window *window, SDL_Renderer *renderer, Node *nodes, int node_cnt) {
+
+
+    int quit = 0;
+
+    SDL_Init(SDL_INIT_EVERYTHING);
+    window = SDL_CreateWindow("Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                              1920, 1080, SDL_WINDOW_SHOWN);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // white
+    SDL_RenderClear(renderer); // clear screen
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black
+//    SDL_Rect rect = {0, 0, 192, 108};
+//    SDL_RenderFillRect(renderer, &rect);
+//    SDL_RenderPresent(renderer);
+
+
+    for (int i = 0; i < node_cnt; i++) {
+        printf("%d: %Lf, %Lf\n", i, nodes[i].lat, nodes[i].lon);
+        long double x = 1;
+        long double y = nodes[i].lon * (1080 / 180);
+        if(x < 0) x = -x;
+        if(y < 0) y = -y;
+
+
+        int x_pos = (int) x;
+        int y_pos = (int) y;
+        printf("%d: %d, %d\n", i, x_pos, y_pos);
+//        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
+        SDL_Rect rect = {x_pos, y_pos, 10, 10};
+        SDL_RenderFillRect(renderer, &rect);
+
     }
+
     SDL_RenderPresent(renderer);
+
+    while (!quit) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = 1;
+            }
+            if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    quit = 1;
+                }
+            }
+        }
+
+
+        SDL_Delay(1);
+    }
+
+
 }

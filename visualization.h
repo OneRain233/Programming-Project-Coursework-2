@@ -8,8 +8,8 @@
 #include <SDL_render.h>
 #include "routeFinding.h"
 
-void visual_init(SDL_Renderer* renderer);
+void draw_graph(Node *nodes, SDL_Renderer *renderer, int node_cnt);
 
-void render_nodes(SDL_Renderer *renderer, const Node *nodes, int size);
+int visualize(SDL_Window *window, SDL_Renderer *renderer, Node *nodes, int node_cnt);
 
 #endif //CWK2_VISUALIZATION_H

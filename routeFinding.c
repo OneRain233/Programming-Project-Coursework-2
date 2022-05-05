@@ -5,30 +5,32 @@
 
 Node *nodes; // convert nodes to index
 int cnt = 0; // number of edgesHead
-float *dist; // distance from source
+long double *dist; // distance from source
 int *path; // the shortest path
 int *queue;
+long double maxLat;
+long double maxLon;
 
-void dij_init(char *filename) {
+void dijInit(char *filename) {
 
     int N = getNodesCnt(filename) * 2;
     if (N == 0) {
         fprintf(stderr, "Error: No nodes found\n");
         exit(1);
     }
-    dist = (float *) malloc(N * sizeof(float));
+    dist = (long double *) malloc(N * sizeof(long double));
     path = (int *) malloc(N * sizeof(int));
     nodes = (Node *) malloc(N * sizeof(Node));
     queue = (int *) malloc(N * sizeof(int));
     for (int i = 0; i < N; i++) {
-        dist[i] = 10000000;
+        dist[i] = (long double)10000000.0;
         path[i] = -1;
     }
 
 }
 
 
-int insertEdge(int index, int to, float weight) {
+int insertEdge(int index, int to, long double weight) {
     Node *p = &nodes[index];
     if (p == NULL) {
         fprintf(stderr, "Error: Node not found\n");
@@ -84,9 +86,10 @@ int readNode(char *filename) {
             p = strstr(buf, "lon=");
             nodes[cnt].lon = atof(p + 4);
             cnt++;
+            if(nodes[cnt].lat > maxLat) maxLat = nodes[cnt].lat;
+            if(nodes[cnt].lon > maxLon) maxLon = nodes[cnt].lon;
         }
     }
-//    printf("%d", cnt);
     fclose(fp);
     return 1;
 }
@@ -149,7 +152,8 @@ int readLink(char *filename) {
                    &id, &node1, &node2, &way, &len, &veg, &arch, &land, &poi);
             int node1Idx = findNodeByName(atoi(node1));
             int node2Idx = findNodeByName(atoi(node2));
-            float len1 = atof(len);
+            long double len1 = atof(len);
+//            printf("%Lf\n", len1);
             int insertRes1 = insertEdge(node1Idx, node2Idx, len1);
             int insertRes2 = insertEdge(node2Idx, node1Idx, len1);
             if (insertRes1 == 0 || insertRes2 == 0) {
@@ -183,7 +187,7 @@ void dij(int startPoint) {
         Edge *e = p->head;
         while (e != NULL) {
             int next = e->to;
-            float len = e->len;
+            long double len = e->len;
             if (dist[next] > dist[cur] + len) {
                 path[next] = cur;
                 dist[next] = dist[cur] + len;
@@ -195,11 +199,11 @@ void dij(int startPoint) {
 
     }
     for (int i = 0; i < cnt; i++) {
-        printf("%d %f\n", nodes[i].id, dist[i]);
+        printf("%d %Lf\n", nodes[i].id, dist[i]);
     }
 }
 
-float getLen(int endPoint) {
+long double getLen(int endPoint) {
     if (endPoint < 0) {
         return -1;
     } else {
@@ -218,4 +222,8 @@ void showPath(int endPoint) {
 
 Node *getNodes() {
     return nodes;
+}
+
+int getNodeCnt() {
+    return cnt;
 }
