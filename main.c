@@ -11,11 +11,9 @@ int main() {
     readNode("Final_Map.map");
     readLink("Final_Map.map");
     // displayMap();
-    dij(1);
-    printf("start:%d end: %d\n", findNodeByIndex(10), findNodeByIndex(888));
-    printf("%Lf\n", getLen(findNodeByName(985084880)));
-    showPath(findNodeByName(985084880));
-    int endPoint = findNodeByName(985084880);
+    dij(1090);
+
+    int endPoint = findNodeByName(-8849);
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
     SDL_Init(SDL_INIT_EVERYTHING);

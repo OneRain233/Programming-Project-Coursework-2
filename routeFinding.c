@@ -15,7 +15,7 @@ long double minLon = 1e8;
 
 void dijInit(char *filename) {
 
-    int N = getNodesCnt(filename) * 2;
+    int N = getNodesCnt(filename)  * 4;
     if (N == 0) {
         fprintf(stderr, "Error: No nodes found\n");
         exit(1);
@@ -201,11 +201,10 @@ void dij(int startPoint) {
             }
             e = e->next;
         }
-
     }
-    for (int i = 0; i < cnt; i++) {
-        printf("%d %Lf\n", nodes[i].id, dist[i]);
-    }
+//    for (int i = 0; i < cnt; i++) {
+//        printf("%Lf ", dist[i]);
+//    }
 }
 
 long double getLen(int endPoint) {

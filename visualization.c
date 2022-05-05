@@ -7,40 +7,24 @@
 #include "SDL2/SDL.h"
 
 void calcPosition(long double x, long double y, long double *x_pos, long double *y_pos, long double baseX,
-                  long double baseY) {
+                  long double baseY, long double offsetX, long double offsetY, long double scale) {
     long double x_pos_temp = x - baseX;
     long double y_pos_temp = y - baseY;
-    *x_pos = x_pos_temp * 1e6 / 10;
-    *y_pos = y_pos_temp * 1e6 / 10;
+    *x_pos = x_pos_temp * 1e6 / scale + offsetX;
+    *y_pos = y_pos_temp * 1e6 / scale + offsetY;
 }
 
-int visualize(SDL_Window *window, SDL_Renderer *renderer,
-              Node *nodes, int *path, int node_cnt, long double baseX,
-              long double baseY, int endPoint) {
-    int quit = 0;
-
-    SDL_Init(SDL_INIT_EVERYTHING);
-    window = SDL_CreateWindow("Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              2560, 1080, SDL_WINDOW_SHOWN);
-//    SDL_SetWindowResizable(window, 1)
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
+               Node *nodes, const int *path, int node_cnt, long double baseX,
+               long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // white
     SDL_RenderClear(renderer); // clear screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black
-//    SDL_Rect rect1 = {0, 0, 192, 108};
-//    SDL_RenderFillRect(renderer, &rect1);
-//    SDL_RenderPresent(renderer);
-
 
     for (int i = 0; i < node_cnt; i++) {
-//        printf("%d: %Lf, %Lf\n", i, nodes[i].lat, nodes[i].lon);
         long double *x_pos = malloc(sizeof(long double));
         long double *y_pos = malloc(sizeof(long double));
-        calcPosition(nodes[i].lat, nodes[i].lon, x_pos, y_pos, baseX, baseY);
-
-        printf("%Lf, %Lf\n", *x_pos, *y_pos);
-//        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
-//        SDL_RenderDrawPoint(renderer, *x_pos, *y_pos);
+        calcPosition(nodes[i].lat, nodes[i].lon, x_pos, y_pos, baseX, baseY, offsetX, offsetY, scale);
         int x = (int) *x_pos;
         int y = (int) *y_pos;
         SDL_Rect rect = {y, x, 5, 5};
@@ -54,41 +38,66 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
         while (cur != NULL) {
             long double x_pos_next;
             long double y_pos_next;
-            calcPosition(nodes[cur->to].lat, nodes[cur->to].lon, &x_pos_next, &y_pos_next, baseX, baseY);
+            calcPosition(nodes[cur->to].lat, nodes[cur->to].lon, &x_pos_next, &y_pos_next, baseX, baseY, offsetX,
+                         offsetY, scale);
             int x_next = (int) x_pos_next;
             int y_next = (int) y_pos_next;
-            SDL_RenderDrawLine(renderer, y, x, y_next, x_next);
+            SDL_RenderDrawLine(renderer, y + 2, x + 2, y_next + 2, x_next + 2);
 
             cur = cur->next;
         }
-
     }
 
 
-    printf("%Lf, %Lf\n", baseX, baseY);
     int cur = endPoint;
     int prev = cur;
-    while(cur != -1) {
+    while (cur != -1) {
         long double cur_x;
         long double cur_y;
-        calcPosition(nodes[cur].lat, nodes[cur].lon, &cur_x, &cur_y, baseX, baseY);
+        calcPosition(nodes[cur].lat, nodes[cur].lon, &cur_x, &cur_y, baseX, baseY, offsetX, offsetY, scale);
         int x_cur = (int) cur_x;
         int y_cur = (int) cur_y;
         long double prev_x;
         long double prev_y;
-        calcPosition(nodes[prev].lat, nodes[prev].lon, &prev_x, &prev_y, baseX, baseY);
+        calcPosition(nodes[prev].lat, nodes[prev].lon, &prev_x, &prev_y, baseX, baseY, offsetX, offsetY, scale);
         int x_prev = (int) prev_x;
         int y_prev = (int) prev_y;
         // red
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
-        SDL_RenderDrawLine(renderer, y_cur, x_cur, y_prev, x_prev);
-        printf("%d, %d -> %d, %d\n", x_cur, y_cur, x_prev, y_prev);
+        SDL_RenderDrawLine(renderer, y_cur + 2, x_cur + 2, y_prev + 2, x_prev + 2);
+//        printf("%d, %d -> %d, %d\n", x_cur, y_cur, x_prev, y_prev);
 
         prev = cur;
         cur = path[cur];
     }
 
+}
+
+
+void update(SDL_Window *window, SDL_Renderer *renderer,
+            Node *nodes, int *path, int node_cnt, long double baseX,
+            long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale) {
+    drawPoint(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
     SDL_RenderPresent(renderer);
+}
+
+int visualize(SDL_Window *window, SDL_Renderer *renderer,
+              Node *nodes, int *path, int node_cnt, long double baseX,
+              long double baseY, int endPoint) {
+    int quit = 0;
+    long double offsetX = -200;
+    long double offsetY = -200;
+    long double scale = 10;
+
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        return 1;
+    }
+
+    window = SDL_CreateWindow("Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                              2560, 1080, SDL_WINDOW_SHOWN);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
 
     while (!quit) {
         SDL_Event event;
@@ -96,15 +105,60 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
             if (event.type == SDL_QUIT) {
                 quit = 1;
             }
+
+            if (event.type == SDL_MOUSEWHEEL) {
+                if (event.wheel.y > 0) {
+                    scale -= 0.3;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                } else if (event.wheel.y < 0) {
+                    scale += 0.3;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                }
+            }
+
+
+            if (event.type == SDL_MOUSEMOTION && event.motion.state == SDL_PRESSED) {
+                offsetY += event.motion.xrel;
+                offsetX += event.motion.yrel;
+                update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+
+            }
+
+
             if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_LEFT) {
+                    offsetY += 100;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                }
+                if (event.key.keysym.sym == SDLK_RIGHT) {
+                    offsetY -= 100;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                }
+                if (event.key.keysym.sym == SDLK_UP) {
+                    offsetX += 100;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                }
+                if (event.key.keysym.sym == SDLK_DOWN) {
+                    offsetX -= 100;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                }
                 if (event.key.keysym.sym == SDLK_ESCAPE) {
                     quit = 1;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                }
+                if (event.key.keysym.sym == SDLK_F1) {
+                    scale += 1;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
+                }
+                if (event.key.keysym.sym == SDLK_F2) {
+                    scale -= 1;
+                    update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale);
                 }
             }
         }
 
 
-        SDL_Delay(1);
+//        SDL_Delay(1);
     }
 
 
