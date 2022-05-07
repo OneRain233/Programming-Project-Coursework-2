@@ -29,6 +29,7 @@ void TEST_readNode2() {
     char *notExistFile = "./test/not_exist_nodes.txt";
     // not exist file
     int cnt = readNode(notExistFile);
+    CU_ASSERT_EQUAL(cnt, -1);
 
 }
 
@@ -74,6 +75,37 @@ void TEST_getNodesCnt3() {
     int cnt = getNodesCnt(emptyFile);
     CU_ASSERT_EQUAL(cnt, 0);
 }
+
+void TEST_dijkstra1() {
+    dijInit("./test/dij_map.txt");
+    readNode("./test/dij_map.txt");
+    readLink("./test/dij_map.txt");
+    int startPoint = findNodeByName(-8847);
+    int endPoint = findNodeByName(-8849);
+    int unreachable = findNodeByName(0);
+//    printf("startPoint: %d, endPoint: %d, unreachable: %d\n", startPoint, endPoint, unreachable);
+
+    long double *pDist = dij(startPoint);
+    CU_ASSERT_EQUAL(pDist[startPoint], 0);
+    CU_ASSERT_EQUAL(pDist[endPoint], 11.006410);
+    CU_ASSERT_EQUAL(pDist[unreachable], 10000000.0);
+}
+
+void TEST_bellmanFord1() {
+    dijInit("./test/dij_map.txt");
+    readNode("./test/dij_map.txt");
+    readLink("./test/dij_map.txt");
+    int startPoint = findNodeByName(-8847);
+    int endPoint = findNodeByName(-8849);
+    int unreachable = findNodeByName(0);
+//    printf("startPoint: %d, endPoint: %d, unreachable: %d\n", startPoint, endPoint, unreachable);
+
+    long double *pDist = bellman(startPoint);
+    CU_ASSERT_EQUAL(pDist[startPoint], 0);
+    CU_ASSERT_EQUAL(pDist[endPoint], 11.006410);
+    CU_ASSERT_EQUAL(pDist[unreachable], 10000000.0);
+}
+
 
 void TEST_readLink1() {
     char *normalFile = "./test/normal_nodes.txt";
@@ -143,7 +175,10 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of readLink for invalid file", TEST_readLink2)) ||
         (NULL == CU_add_test(pSuite, "test of dijInit for normal file", TEST_dijInit1)) ||
         (NULL == CU_add_test(pSuite, "test of dijInit for invalid file", TEST_dijInit2)) ||
-        (NULL == CU_add_test(pSuite, "test of insertEdge", TEST_insertEdge1))) {
+        (NULL == CU_add_test(pSuite, "test of insertEdge", TEST_insertEdge1)) ||
+        (NULL == CU_add_test(pSuite, "test of dij", TEST_dijkstra1)) ||
+        (NULL == CU_add_test(pSuite, "test of bellman", TEST_bellmanFord1))
+            ) {
 
         CU_cleanup_registry();
         return CU_get_error();

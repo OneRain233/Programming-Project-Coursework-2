@@ -24,14 +24,14 @@ int findNodeByName(int n);
 int findNodeByIndex(int idx);
 void displayMap();
 int readLink(char *filename);
-void dij(int startPoint);
+long double *dij(int startPoint);
 long double getLen(int endPoint);
 void showPath(int endPoint);
 Node* getNodes();
 void floyd();
 int getNodeCnt();
 int *getPath();
-void bellman(int startPoint);
+long double *bellman(int startPoint);
 long double *getDist();
 
 #endif //CWK_DIJ_H

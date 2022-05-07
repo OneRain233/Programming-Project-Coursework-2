@@ -54,7 +54,7 @@ int main() {
     endPoint = atoi(buffer);
     endPoint = findNodeByName(endPoint);
 
-    dij(startPoint);
+    long double *dist = dij(startPoint);
 
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;

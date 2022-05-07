@@ -53,7 +53,7 @@ For the system testing, it means that I should test the complete system which me
 
 ### Tests cases
 
-**Function** : `int dijInit();`
+**Function** : `int dijInit(char *filename);`
 
 <u>Expected behavior:</u>
 
@@ -63,13 +63,13 @@ For the system testing, it means that I should test the complete system which me
 
 <u>Assertions:</u>
 
-1. No input
+1. A valid file name is given;
 
 <u>Test cases:</u>
 
 ​		C1:
 
-​				Input: No input
+​				Input: A valid file name;
 
 ​				Expected result: The value of element of dist is set to `0` and the value of elements of path is set to `-1`; The variables 				should be allocated
 
@@ -80,12 +80,11 @@ For the system testing, it means that I should test the complete system which me
 <u>Expected behavior:</u>
 
 1. Read the nodes from the given file whose file name is filename to the variable which stores the nodes.
-   1. If success, return `1`, if fail, return `0`;
-
+2. If success, return `the number of the nodes`, if fail, return `-1`;
 
 <u>Assertions:</u>
 
-1. The file name pointer `filename` is not NULL
+1. The file name pointer `filename` is not NULL and the file exists.
 
 <u>Test cases:</u>
 
@@ -93,13 +92,13 @@ For the system testing, it means that I should test the complete system which me
 
 ​			Input: A normal file name 
 
-​			Expected result: All the nodes will be stored to the variable and return `1`
+​			Expected result: All the nodes will be stored to the variable and return 
 
 ​	C2: 
 
 ​			Input: A NULL file name
 
-​			Expect result: Display an error message and return `0`
+​			Expect result: Display an error message and return `-1`
 
 
 
@@ -122,13 +121,13 @@ For the system testing, it means that I should test the complete system which me
 
 ​			Input: A normal file name
 
-​			Expected result: The links are stored to the struct and return `1`;
+​			Expected result: The links are stored to the struct and return the number of edges.
 
 ​	C2:
 
 ​			Input: A NULL file name
 
-​			Expect result: Display an error message and return `0`;
+​			Expect result: Display an error message and return `-1`;
 
 
 
@@ -157,7 +156,7 @@ For the system testing, it means that I should test the complete system which me
 
 ​		Input: A NULL file name:
 
-​		Expected result: Display an error message and return `0`
+​		Expected result: Display an error message and return `-1`
 
 
 

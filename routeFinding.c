@@ -23,6 +23,7 @@ int dijInit(char *filename) {
     } else if (N == -1) {
         return -1;
     }
+    nodeCnt = 0;
     N = N * 4;
     dist = (long double *) malloc(N * sizeof(long double));
     path = (int *) malloc(N * sizeof(int));
@@ -59,6 +60,7 @@ int insertEdge(int index, int to, long double weight) {
 }
 
 int getNodesCnt(char *filename) {
+    int tmpCnt = 0;
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
         fprintf(stderr, "File %s open error\n", filename);
@@ -68,11 +70,11 @@ int getNodesCnt(char *filename) {
     char line[100];
     while (fgets(line, 100, fp) != NULL) {
         if (strstr(line, "<node id=") != NULL) {
-            NodeCnt++;
+            tmpCnt++;
         }
     }
     fclose(fp);
-    return NodeCnt;
+    return tmpCnt;
 }
 
 int readNode(char *filename) {
@@ -177,9 +179,9 @@ int readLink(char *filename) {
 
 }
 
-void dij(int startPoint) {
+long double *dij(int startPoint) {
     if (startPoint < 0) {
-        return;
+        return NULL;
     }
     dist[startPoint] = 0;
 
@@ -208,11 +210,12 @@ void dij(int startPoint) {
 //    for (int i = 0; i < nodeCnt; i++) {
 //        printf("%Lf ", dist[i]);
 //    }
+    return dist;
 }
 
-void bellman(int startPoint) {
+long double *bellman(int startPoint) {
     if (startPoint < 0) {
-        return;
+        return NULL;
     }
     dist[startPoint] = 0;
     int flag = 0;
@@ -235,8 +238,7 @@ void bellman(int startPoint) {
         }
         if (flag == 0) break;
     }
-
-
+    return dist;
 }
 
 long double getLen(int endPoint) {
