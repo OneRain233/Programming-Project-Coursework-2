@@ -3,24 +3,27 @@
 #include <string.h>
 #include "routeFinding.h"
 
-Node *nodes; // convert nodes to index
-int cnt = 0; // number of edgesHead
-long double *dist; // distance from source
-int *path; // the shortest path
-int *queue; // queue
+Node *nodes = NULL; // convert nodes to index
+int nodeCnt = 0; // number of edgesHead
+long double *dist = NULL; // distance from source
+int *path = NULL; // the shortest path
+int *queue = NULL; // queue
 long double maxLat = -1e8; // max latitude
 long double maxLon = -1e8; // max longitude
 long double minLat = 1e8; // min latitude
 long double minLon = 1e8; // min longitude
 int edgeCnt = 0;
 
-void dijInit(char *filename) {
+int dijInit(char *filename) {
 
-    int N = getNodesCnt(filename) * 4;
+    int N = getNodesCnt(filename);
     if (N == 0) {
         fprintf(stderr, "Error: No nodes found\n");
-        exit(1);
+        return 0;
+    } else if (N == -1) {
+        return -1;
     }
+    N = N * 4;
     dist = (long double *) malloc(N * sizeof(long double));
     path = (int *) malloc(N * sizeof(int));
     nodes = (Node *) malloc(N * sizeof(Node));
@@ -29,7 +32,7 @@ void dijInit(char *filename) {
         dist[i] = (long double) 10000000.0;
         path[i] = -1;
     }
-
+    return 1;
 }
 
 
@@ -58,8 +61,8 @@ int insertEdge(int index, int to, long double weight) {
 int getNodesCnt(char *filename) {
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
-        fprintf(stderr, "File open error");
-        return 0;
+        fprintf(stderr, "File %s open error\n", filename);
+        return -1;
     }
     int NodeCnt = 0;
     char line[100];
@@ -73,35 +76,36 @@ int getNodesCnt(char *filename) {
 }
 
 int readNode(char *filename) {
-    FILE *fp = fopen(filename, "r");
-    if (fp == NULL) {
-        fprintf(stderr, "open file error\n");
+    int init = dijInit(filename);
+    if (init == -1) {
+        return -1;
+    }
+    if (init == 0) {
         return 0;
     }
+    FILE *fp = fopen(filename, "r");
     char buf[1024];
     while (fgets(buf, 1024, fp) != NULL) {
         if (strstr(buf, "<node id=") != NULL) {
-            // puts(buf);
             char *p = strstr(buf, "id=");
-            nodes[cnt].id = atoi(p + 3);
+            nodes[nodeCnt].id = atoi(p + 3);
             p = strstr(buf, "lat=");
-            nodes[cnt].lat = atof(p + 4);
+            nodes[nodeCnt].lat = atof(p + 4);
             p = strstr(buf, "lon=");
-            nodes[cnt].lon = atof(p + 4);
-            cnt++;
-            if (nodes[cnt].lat > maxLat) maxLat = nodes[cnt].lat;
-            if (nodes[cnt].lat < minLat) minLat = nodes[cnt].lat;
-            if (nodes[cnt].lon > maxLon) maxLon = nodes[cnt].lon;
-            if (nodes[cnt].lon < minLon) minLon = nodes[cnt].lon;
-
+            nodes[nodeCnt].lon = atof(p + 4);
+            nodeCnt++;
+            if (nodes[nodeCnt].lat > maxLat) maxLat = nodes[nodeCnt].lat;
+            if (nodes[nodeCnt].lat < minLat) minLat = nodes[nodeCnt].lat;
+            if (nodes[nodeCnt].lon > maxLon) maxLon = nodes[nodeCnt].lon;
+            if (nodes[nodeCnt].lon < minLon) minLon = nodes[nodeCnt].lon;
         }
     }
     fclose(fp);
-    return 1;
+    return nodeCnt;
 }
 
 int findNodeByName(int n) {
-    for (int i = 0; i < cnt; i++) {
+    for (int i = 0; i < nodeCnt; i++) {
         if (nodes[i].id == n) {
             return i;
         }
@@ -112,14 +116,14 @@ int findNodeByName(int n) {
 int findNodeByIndex(int idx) { return nodes[idx].id; }
 
 void displayNode() {
-    for (int i = 0; i < cnt; i++) {
+    for (int i = 0; i < nodeCnt; i++) {
         fprintf(stdout, "%d ", nodes[i].id);
     }
     fprintf(stdout, "\n");
 }
 
 void displayMap() {
-    for (int i = 0; i < cnt; i++) {
+    for (int i = 0; i < nodeCnt; i++) {
         fprintf(stdout, "%d ", nodes[i].id);
         Edge *p = nodes[i].head;
         while (p != NULL) {
@@ -133,11 +137,10 @@ void displayMap() {
 
 
 int readLink(char *filename) {
-    int nodeCnt = 0;
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
         fprintf(stderr, "File not found\n");
-        return 0;
+        return -1;
     }
     while (!feof(fp)) {
         char id[20] = {0};
@@ -166,13 +169,11 @@ int readLink(char *filename) {
                 fprintf(stderr, "insert error\n");
                 exit(1);
             }
-            nodeCnt++;
             edgeCnt++;
-
         }
     }
     fclose(fp);
-    return 1;
+    return edgeCnt;
 
 }
 
@@ -204,7 +205,7 @@ void dij(int startPoint) {
             e = e->next;
         }
     }
-//    for (int i = 0; i < cnt; i++) {
+//    for (int i = 0; i < nodeCnt; i++) {
 //        printf("%Lf ", dist[i]);
 //    }
 }
@@ -218,7 +219,7 @@ void bellman(int startPoint) {
 
     for (int i = 0; i < edgeCnt; i++) {
         flag = 0;
-        for (int j = 0; j < cnt; j++) {
+        for (int j = 0; j < nodeCnt; j++) {
             Edge *p = nodes[j].head;
             while (p != NULL) {
                 int next = p->to;
@@ -264,6 +265,9 @@ Node *getNodes() {
 }
 
 int getNodeCnt() {
-    return cnt;
+    return nodeCnt;
 }
 
+long double *getDist() {
+    return dist;
+}

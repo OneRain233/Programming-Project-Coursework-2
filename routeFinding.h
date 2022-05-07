@@ -16,7 +16,7 @@ typedef struct _Node {
 } Node;
 
 
-void dijInit(char *filename);
+int dijInit(char *filename);
 int insertEdge(int index, int to, long double weight);
 int getNodesCnt(char *filename);
 int readNode(char *filename);
@@ -32,5 +32,6 @@ void floyd();
 int getNodeCnt();
 int *getPath();
 void bellman(int startPoint);
+long double *getDist();
 
 #endif //CWK_DIJ_H
