@@ -6,6 +6,10 @@
 #include "routeFinding.h"
 #include "SDL2/SDL.h"
 
+
+#define SCREEN_WIDTH 2560
+#define SCREEN_HEIGHT 1440
+
 void calcPosition(long double x, long double y, long double *x_pos, long double *y_pos, long double baseX,
                   long double baseY, long double offsetX, long double offsetY, long double scale) {
     long double x_pos_temp = x - baseX;
@@ -77,7 +81,42 @@ void update(SDL_Window *window, SDL_Renderer *renderer,
             long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
             long double pointSize) {
     drawPoint(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
+
     SDL_RenderPresent(renderer);
+}
+
+int findPoint(int x, int y, Node *nodes, int node_cnt, long double baseX, long double baseY, long double offsetX,
+              long double offsetY, long double scale) {
+    long double x_original = (x * scale - offsetX) / 1e6 + baseX;
+    long double y_original = (y * scale - offsetY) / 1e6 + baseY;
+    printf("%Lf, %Lf\n", x_original, y_original);
+    for (int i = 0; i < node_cnt; i++) {
+        // range 0.0010 ~ 0.0020
+        if (fabsl(nodes[i].lat - x_original) < 0.01 && fabsl(nodes[i].lon - y_original) < 0.01) {
+            return i;
+        }
+
+    }
+    return -1;
+}
+
+void
+highlight(SDL_Window *window, SDL_Renderer *renderer, int NodeIndex, Node *nodes, long double baseX, long double baseY,
+          long double offsetX, long double offsetY, long double scale, long double pointSize) {
+    long double x_pos = nodes[NodeIndex].lat;
+    long double y_pos = nodes[NodeIndex].lon;
+    long double *x_pos_temp = malloc(sizeof(long double));
+    long double *y_pos_temp = malloc(sizeof(long double));
+    calcPosition(x_pos, y_pos, x_pos_temp, y_pos_temp, baseX, baseY, offsetX, offsetY, scale);
+    int x = (int) *x_pos_temp;
+    int y = (int) *y_pos_temp;
+    SDL_Rect rect = {y, x, (int) pointSize + 10, (int) pointSize};
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
+    SDL_RenderFillRect(renderer, &rect);
+    SDL_RenderPresent(renderer);
+    free(x_pos_temp);
+    free(y_pos_temp);
+
 }
 
 int visualize(SDL_Window *window, SDL_Renderer *renderer,
@@ -88,6 +127,8 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
     long double offsetY = -200;
     long double scale = 10;
     long double pointSize = 3;
+    int width = 2560;
+    int height = 1500;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -95,9 +136,11 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
     }
 
     window = SDL_CreateWindow("Visualization", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                              2560, 1080, SDL_WINDOW_SHOWN);
+                              SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+//    drawACharacter(window, renderer, 100, 100, "Hello World");
     update(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
+    int nowInput = 0;
 
     while (!quit) {
         SDL_Event event;
