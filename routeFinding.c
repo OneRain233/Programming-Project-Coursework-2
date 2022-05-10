@@ -241,14 +241,6 @@ long double *bellman(int startPoint) {
     return dist;
 }
 
-long double getLen(int endPoint) {
-    if (endPoint < 0) {
-        return -1;
-    } else {
-        return dist[endPoint];
-    }
-}
-
 void showPath(int endPoint) {
     int cur = endPoint;
     while (cur != -1) {

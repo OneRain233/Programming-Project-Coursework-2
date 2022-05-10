@@ -102,14 +102,13 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-
-
-**Function** : `void readLink(char *filename);`
+**Function** : `int readLink(char *filename);`
 
 <u>Expected behavior:</u>
 
 1. Read the links from the given file whose file name is `filename` to the variable that stores the edges.
 1. Convert the given node id to a small id which will be used to find the shortest route.
+1. If success return `the number of edges`, if fail return `-1`
 
 <u>Assertions:</u>
 
@@ -128,8 +127,6 @@ For the system testing, it means that I should test the complete system which me
 ​			Input: A NULL file name
 
 ​			Expect result: Display an error message and return `-1`;
-
-
 
 
 
@@ -160,7 +157,34 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function**: `void dij(int startPoint)`
+**Function**: `int insertEdge(int index, int to, long double weight) `
+
+<u>Expected behavior:</u>
+
+1. Insert the edge from `index`  to `to` with the length `weigth`;
+2. Return `1` if success and `0` fail
+
+<u>Assertions:</u>
+
+1. The `index` is valid
+
+<u>Test cases:</u>
+
+​	C1:
+
+​		Input: A valid `index, to, weight`
+
+​		Expected result: Add the edge from `index` to `to` with length `weigth`;
+
+​	C2:
+
+​		Input: An invalid `index`
+
+​		Expected result: Display an error message and return `0`
+
+
+
+**Function**: `long double *dij(int startPoint)`
 
 <u>Expected behavior:</u>
 
@@ -188,60 +212,31 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-
-
-**Function**: `long double getLen(int endPoint);`
+**Function**: `long double *bellman(int startPoint)`
 
 <u>Expected behavior:</u>
 
-1. Return the shortest length from the start point to the end point.
+1. Find the shortest route from the start point;
+2. Record the path of shortest route
+3. Calculate the shortest way to each point from the start point;
 
 <u>Assertions:</u>
 
-1. The end point is valid 
+1. The start point is valid.
 
 <u>Test cases:</u>
 
-​	C1:
+​	C1: 
 
-​		Input: A valid end point like `10`;
+​		Input: A valid start point like `10`;
 
-​		Expected result: The function should return the shortest length from the start point and end point;
-
-​	C2: 
-
-​		Input: An invalid end point like `-1`
-
-​		Expected result: Display an error message and return `-1`;
-
-
-
-**Function**: `int insertEdge(int index, int to, long double weight) `
-
-<u>Expected behavior:</u>
-
-1. Insert the edge from `index`  to `to` with the length `weigth`;
-2. Return `1` if success and `0` fail
-
-<u>Assertions:</u>
-
-1. The `index` is valid
-
-<u>Test cases:</u>
-
-​	C1:
-
-​		Input: A valid `index, to, weight`
-
-​		Expected result: Add the edge from `index` to `to` with length `weigth`;
+​		Expect result:  The program should compute the shortest route from the start point and store it in the `dist` variable. The path to each point should be record to the `path` variable.
 
 ​	C2:
 
-​		Input: An invalid `index`
+​		Input: An invalid start  point `-1`;
 
-​		Expected result: Display an error message and return `0`
-
-
+​		Expect result: Display an error message and return
 
 
 
