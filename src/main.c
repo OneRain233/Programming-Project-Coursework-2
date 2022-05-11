@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <SDL.h>
 #include <time.h>
-#include "routeFinding.h"
-#include "visualization.h"
+#include "../include/routeFinding.h"
+#include "../include/visualization.h"
 #include <ui.h>
 
 int startPoint = -8847;
@@ -16,10 +16,10 @@ void run(char *filename) {
     printf("startPoint: %d\n", startPoint);
     printf("endPoint: %d\n", endPoint);
     long double *dist;
-    if(algo == 0) {
+    if (algo == 0) {
         printf("algo: Dijkstra\n");
-        dist = dij(startPoint);
-    } else if(algo == 1) {
+        dist = dijkstra(startPoint);
+    } else if (algo == 1) {
         printf("algo: bellman\n");
         dist = bellman(startPoint);
     }
@@ -78,6 +78,11 @@ void on_select(uiRadioButtons *r, void *data) {
     printf("algo: %d\n", algo);
 }
 
+int on_close(uiWindow *w, void *data) {
+    uiQuit();
+    exit(0);
+    return 1;
+}
 
 void promptInput() {
     uiInitOptions o;
@@ -150,22 +155,35 @@ void promptInput() {
 
     uiWindowSetChild(w, uiControl(g));
     uiControlShow(uiControl(w));
+
+    uiWindowOnClosing(w, on_close, NULL);
     uiMain();
 }
 
 
-int main() {
+int main(int argc, char *argv[]) {
+    char *filename = "bin/Final_Map.map";
 //    promptInput();
-    printf("%d\n", startPoint);
-    printf("%d\n", endPoint);
+    if (argc == 1) {
+        fprintf(stdout, "Use default file: bin/Final_Map.map\n");
+    } else if (argc == 2) {
+        filename = argv[1];
+    } else {
+        fprintf(stderr, "Usage: ./RouteFinding <filename>");
+        exit(1);
+    }
+    FILE *check = fopen(filename, "r");
+    if(check == NULL) {
+        fprintf(stderr, "File \"%s\" Not found\n", filename);
+        exit(1);
+    }
 
-    dijInit("Final_Map.map");
-    readNode("Final_Map.map");
-    readLink("Final_Map.map");
+
+    dijInit(filename);
+    readNode(filename);
+    readLink(filename);
 
     promptInput();
-//    startPoint = findNodeByName(-8847);
-//    endPoint = findNodeByName(-8849);
     run("Final_Map.map");
     return 0;
 }

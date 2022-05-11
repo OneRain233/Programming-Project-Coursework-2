@@ -8,7 +8,7 @@ Student Number: 2020110019
 
 ### Introduction
 
-This project aims at finding the shortest route between the two given points. The project I choose it the first project which is *Route finding*. This project should implement that find the shortest way between the two given points. First, the project should read the given map file into the data structure. Then, it should build the graph first using adjacent list and then use Dijkstra algorithm to find the shortest way. The graph data structure will be la strut which have the attribute `id, to, len`, which are the `id` is the node id and `to` is the destination of the node and  `len` is the weight of the edge. Then the node structure of node will be like `id, lat, lon, edges`, while `id ` is the  id of the node, `lat` and `lon` is the latitude and longitude of the node, `edges` is the head of linked list that contains all the edges of the nodes.   Then it should record the `path` of the shortest way and at last, it should visualize the graph and the found shortest way using the given information about nodes and links. 
+This project aims at finding the shortest route between the two given points. The project I choose it the first project which is *Route finding*. This project should implement that find the shortest way between the two given points. First, the project should read the given map file into the data structure. Then, it should build the graph first using adjacent list and then use Dijkstra and Bellman Ford algorithm to find the shortest way. The graph data structure will be la strut which have the attribute `id, to, len`, which are the `id` is the node id and `to` is the destination of the node and  `len` is the weight of the edge. Then the node structure of node will be like `id, lat, lon, edges`, while `id ` is the  id of the node, `lat` and `lon` is the latitude and longitude of the node, `edges` is the head of linked list that contains all the edges of the nodes.   Then it should record the `path` of the shortest way and at last, it should visualize the graph and the found shortest way using the given information about nodes and links. 
 
 ### Modules
 
@@ -16,28 +16,36 @@ This project aims at finding the shortest route between the two given points. Th
 
 Used to call other modules.
 
-| Name | Description                   |
-| ---- | ----------------------------- |
-| main | The main logic of the project |
+| Name               | Description                          |
+| ------------------ | ------------------------------------ |
+| int main()         | The main logic of the project        |
+| void run()         | Run the route finding algorithm      |
+| void promptInput() | Prompt the input of user in GUI mode |
 
 #### Route finding
 
 Used to find the shortest way of the graph
 
-| Name                                                  | Description                                                  |
-| ----------------------------------------------------- | ------------------------------------------------------------ |
-| dijInit()                                            | Used to initialize the Dijkstra                              |
-| readNode()                                            | Used to read nodes from the map                              |
-| readLink()                                            | Used to read links from the map                              |
-| dij()                                                 | Used to find the shortest route                              |
-| long double getLen(int endPoint)                      | Used to get the length from the start point to the end point |
-| int insertEdge(int index, int to, long double weight) | Used to add edges to the adjacent list                       |
+| Name                                                  | Description                            |
+| ----------------------------------------------------- | -------------------------------------- |
+| int dijInit(char *filename)                           | Used to initialize the Dijkstra        |
+| int readNode(char *filename)                          | Used to read nodes from the map        |
+| int readLink(char *filename);                         | Used to read links from the map        |
+| int insertEdge(int index, int to, long double weight) | Used to add edges to the adjacent list |
+| long double *dijkstra(int startPoint);                | Used to find the shortest route        |
+| long double *bellman(int startPoint);                 | Used to find the shortest route        |
 
 #### Visualization
 
 Used to display the map and the shortest way between two given points.
 
-
+| Name              | Description                                               |
+| :---------------- | --------------------------------------------------------- |
+|                   |                                                           |
+| void calcPosition | Used to calculate the position of the point in the window |
+| void draw    | Used to draw all the point and edges of the map          |
+| void update       | Used to update the view when user want to drag or zoom |
+| int visualize     | Main logic of the visualization |
 
 # Test Plan
 
@@ -184,7 +192,7 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function**: `long double *dij(int startPoint)`
+**Function**: `long double *dijkstra(int startPoint)`
 
 <u>Expected behavior:</u>
 
@@ -242,9 +250,10 @@ For the system testing, it means that I should test the complete system which me
 
 # Schedule
 
-| Date | What should I do |
-| ---- | ---------------- |
-|      |                  |
-|      |                  |
-|      |                  |
-
+| Date                  | What should I do                                  |
+| --------------------- | ------------------------------------------------- |
+| 2022.4.21 - 2022.4.25 | Implement the read and store of the map.          |
+| 2022.4.26 - 2022.4.29 | Implement the Dijkstra and Bellman Ford algorithm |
+| 2022.4.30 - 2022.5.4  | International Work's Day                          |
+| 2022.5.5 - 2022.5.10  | Implement the visualization part                  |
+| 2022.5.11 - 2022.5.15 | Test the program                                  |

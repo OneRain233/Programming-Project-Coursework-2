@@ -9,10 +9,10 @@ find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
 
 
-add_executable(cwk2 routeFinding.c visualization.c visualization.h main.c)
+add_executable(cwk2 src/routeFinding.c src/visualization.c include/visualization.h src/main.c)
 target_link_libraries(cwk2 ${SDL2_LIBRARIES})
 
 # testing
-add_executable(unittest unittest1.c routeFinding.c visualization.c visualization.h ui.h )
+add_executable(unittest src/unittest1.c src/routeFinding.c src/visualization.c include/visualization.h )
 target_link_libraries(unittest ${SDL2_LIBRARIES} cunit)
 

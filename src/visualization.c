@@ -2,8 +2,8 @@
 // Created by onerain233 on 4/24/22.
 //
 
-#include "visualization.h"
-#include "routeFinding.h"
+#include "../include/visualization.h"
+#include "../include/routeFinding.h"
 #include "SDL2/SDL.h"
 
 
@@ -18,10 +18,10 @@ void calcPosition(long double x, long double y, long double *x_pos, long double 
     *y_pos = y_pos_temp * 1e6 / scale + offsetY;
 }
 
-void drawPoint(SDL_Window *window, SDL_Renderer *renderer,
-               Node *nodes, const int *path, int node_cnt, long double baseX,
-               long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
-               long double pointSize) {
+void draw(SDL_Window *window, SDL_Renderer *renderer,
+          Node *nodes, const int *path, int node_cnt, long double baseX,
+          long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
+          long double pointSize) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // white
     SDL_RenderClear(renderer); // clear screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black
@@ -80,7 +80,7 @@ void update(SDL_Window *window, SDL_Renderer *renderer,
             Node *nodes, int *path, int node_cnt, long double baseX,
             long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
             long double pointSize) {
-    drawPoint(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
+    draw(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
 
     SDL_RenderPresent(renderer);
 }
@@ -127,8 +127,6 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
     long double offsetY = -200;
     long double scale = 10;
     long double pointSize = 3;
-    int width = 2560;
-    int height = 1500;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());

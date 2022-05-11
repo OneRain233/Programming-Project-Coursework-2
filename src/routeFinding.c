@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "routeFinding.h"
+#include "../include/routeFinding.h"
 
 Node *nodes = NULL; // convert nodes to index
 int nodeCnt = 0; // number of edgesHead
@@ -179,7 +179,7 @@ int readLink(char *filename) {
 
 }
 
-long double *dij(int startPoint) {
+long double *dijkstra(int startPoint) {
     if (startPoint < 0) {
         return NULL;
     }

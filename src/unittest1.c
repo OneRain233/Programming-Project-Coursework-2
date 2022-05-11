@@ -2,7 +2,7 @@
 // Created by onerain233 on 5/6/22.
 //
 // unit test
-#include "unittest1.h"
+#include "../include/unittest1.h"
 #include "routeFinding.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -85,7 +85,7 @@ void TEST_dijkstra1() {
     int unreachable = findNodeByName(0);
 //    printf("startPoint: %d, endPoint: %d, unreachable: %d\n", startPoint, endPoint, unreachable);
 
-    long double *pDist = dij(startPoint);
+    long double *pDist = dijkstra(startPoint);
     CU_ASSERT_EQUAL(pDist[startPoint], 0);
     CU_ASSERT_EQUAL(pDist[endPoint], 11.006410);
     CU_ASSERT_EQUAL(pDist[unreachable], 10000000.0);
@@ -171,12 +171,12 @@ int main() {
         (NULL == CU_add_test(pSuite, "test of getNodesCnt for normal file", TEST_getNodesCnt1)) ||
         (NULL == CU_add_test(pSuite, "test of getNodesCnt for invalid file", TEST_getNodesCnt2)) ||
         (NULL == CU_add_test(pSuite, "test of getNodesCnt for empty file", TEST_getNodesCnt3)) ||
-        (NULL == CU_add_test(pSuite, "test of readLink for normal file", TEST_readLink1)) ||
+        (NULL == CU_add_test(pSuite, "test of readL ink for normal file", TEST_readLink1)) ||
         (NULL == CU_add_test(pSuite, "test of readLink for invalid file", TEST_readLink2)) ||
         (NULL == CU_add_test(pSuite, "test of dijInit for normal file", TEST_dijInit1)) ||
         (NULL == CU_add_test(pSuite, "test of dijInit for invalid file", TEST_dijInit2)) ||
         (NULL == CU_add_test(pSuite, "test of insertEdge", TEST_insertEdge1)) ||
-        (NULL == CU_add_test(pSuite, "test of dij", TEST_dijkstra1)) ||
+        (NULL == CU_add_test(pSuite, "test of dijkstra", TEST_dijkstra1)) ||
         (NULL == CU_add_test(pSuite, "test of bellman", TEST_bellmanFord1))
             ) {
 

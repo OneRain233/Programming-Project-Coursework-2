@@ -22,7 +22,7 @@ int getNodesCnt(char *filename);
 int readNode(char *filename);
 int findNodeByName(int n);
 int readLink(char *filename);
-long double *dij(int startPoint);
+long double *dijkstra(int startPoint);
 void showPath(int endPoint);
 Node* getNodes();
 int getNodeCnt();
