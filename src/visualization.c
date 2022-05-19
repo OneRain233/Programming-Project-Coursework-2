@@ -18,10 +18,8 @@ void calcPosition(long double x, long double y, long double *x_pos, long double 
     *y_pos = y_pos_temp * 1e6 / scale + offsetY;
 }
 
-void draw(SDL_Window *window, SDL_Renderer *renderer,
-          Node *nodes, const int *path, int node_cnt, long double baseX,
-          long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
-          long double pointSize) {
+void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, long double baseX, long double baseY,
+          int endPoint, long double offsetX, long double offsetY, long double scale, long double pointSize) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // white
     SDL_RenderClear(renderer); // clear screen
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // black
@@ -80,7 +78,7 @@ void update(SDL_Window *window, SDL_Renderer *renderer,
             Node *nodes, int *path, int node_cnt, long double baseX,
             long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
             long double pointSize) {
-    draw(window, renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
+    draw(renderer, nodes, path, node_cnt, baseX, baseY, endPoint, offsetX, offsetY, scale, pointSize);
 
     SDL_RenderPresent(renderer);
 }

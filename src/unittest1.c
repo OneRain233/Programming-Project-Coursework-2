@@ -3,7 +3,7 @@
 //
 // unit test
 #include "../include/unittest1.h"
-#include "routeFinding.h"
+#include "../include/routeFinding.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <CUnit/CUnit.h>

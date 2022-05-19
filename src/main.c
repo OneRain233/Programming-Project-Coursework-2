@@ -184,6 +184,6 @@ int main(int argc, char *argv[]) {
     readLink(filename);
 
     promptInput();
-    run("Final_Map.map");
+    run(filename);
     return 0;
 }

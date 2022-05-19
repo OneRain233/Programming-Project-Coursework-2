@@ -39,7 +39,7 @@ if [ $LIBUI_FLAG = 0 ]; then
   cd libui || exit
   meson setup build
   ninja -C build
-  cd build/meson-out
+  cd build/meson-out || exit
   ln -sf libui.so.0 libui.so
   cd ../.. || exit
   install build/meson-out/libui.so /usr/lib/

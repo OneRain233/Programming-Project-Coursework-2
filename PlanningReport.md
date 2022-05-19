@@ -41,7 +41,6 @@ Used to display the map and the shortest way between two given points.
 
 | Name              | Description                                               |
 | :---------------- | --------------------------------------------------------- |
-|                   |                                                           |
 | void calcPosition | Used to calculate the position of the point in the window |
 | void draw    | Used to draw all the point and edges of the map          |
 | void update       | Used to update the view when user want to drag or zoom |
@@ -81,6 +80,12 @@ For the system testing, it means that I should test the complete system which me
 
 ​				Expected result: The value of element of dist is set to `0` and the value of elements of path is set to `-1`; The variables 				should be allocated
 
+​		C2:
+
+​				Input: A invalid file name (not exist);
+
+​				Expected result: It will return `-1`;
+
 
 
 **Function** : `int readNode(char *filename);`
@@ -98,15 +103,21 @@ For the system testing, it means that I should test the complete system which me
 
 ​	C1:
 
-​			Input: A normal file name 
+​			Input: A normal file name with some nodes
 
-​			Expected result: All the nodes will be stored to the variable and return 
+​			Expected result: All the nodes will be stored to the variable and return the number of nodes
 
 ​	C2: 
 
 ​			Input: A NULL file name
 
 ​			Expect result: Display an error message and return `-1`
+
+​	C3:
+
+​			Input: A valid file name with 0 node in;
+
+​			Expected result: It will return `0`;
 
 
 
@@ -126,7 +137,7 @@ For the system testing, it means that I should test the complete system which me
 
 ​	C1:
 
-​			Input: A normal file name
+​			Input: A valid file name with some edges;
 
 ​			Expected result: The links are stored to the struct and return the number of edges.
 
@@ -134,7 +145,13 @@ For the system testing, it means that I should test the complete system which me
 
 ​			Input: A NULL file name
 
-​			Expect result: Display an error message and return `-1`;
+​			Expected result: Display an error message and return `-1`;
+
+​	C3:
+
+​			Input: A valid file name with no edge;
+
+​			Expected result: It will return `0`;
 
 
 
@@ -210,7 +227,7 @@ For the system testing, it means that I should test the complete system which me
 
 ​		Input: A valid start point like `10`;
 
-​		Expect result:  The program should compute the shortest route from the start point and store it in the `dist` variable. The 		path to each point should be record to the `path` variable.
+​		Expected result:  The program should compute the shortest route from the start point and store it in the `dist` variable. The 		path to each point should be record to the `path` variable.
 
 ​	C2:
 
@@ -238,15 +255,77 @@ For the system testing, it means that I should test the complete system which me
 
 ​		Input: A valid start point like `10`;
 
-​		Expect result:  The program should compute the shortest route from the start point and store it in the `dist` variable. The path to each point should be record to the `path` variable.
+​		Expected result:  The program should compute the shortest route from the start point and store it in the `dist` variable. The path to each point should be record to the `path` variable.
 
 ​	C2:
 
 ​		Input: An invalid start  point `-1`;
 
-​		Expect result: Display an error message and return
+​		Expected result: Display an error message and return
 
 
+
+**Function:** `void calcPosition(long double x, long double y, long double *x_pos, long double *y_pos, long double baseX,long double baseY, long double offsetX, long double offsetY, long double scale)`
+
+<u>Expected behavior:</u>
+
+1. Calculate the position of the point in the window;
+2. Store the relative position of the given `x` and `y` in `x_pos` and `y_pos`;
+
+<u>Assertions:</u>
+
+1. All the arguments are valid;
+
+<u>Test cases:</u>
+
+​	C1:
+
+​		Input: Valid arguments;
+
+​		Expected result: The `x_pos` and `y_pos` store the relative position.
+
+
+
+**Function: ** `void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, long double baseX, long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale, long double pointSize) `
+
+<u>Expected behavior:</u>
+
+1. Draw the map in the given `renderer` according to the arguments, includes the `nodes`, `edges` and the found `shortest path`.
+
+<u>Assertions:</u>
+
+1. All the arguments are valid;
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: Valid arguments;
+
+​			Expected results: The renderer has been draw.
+
+
+
+**Function:** `int visualize(SDL_Window *window, SDL_Renderer *renderer, Node *nodes, int *path, int node_cnt, long double baseX, long double baseY, int endPoint)`
+
+<u>Expected behavior:</u>
+
+1. Initialize the window and renderer;
+2. Call other functions to draw the nodes and edges;
+3. Monitor user's event include Quit, Mouse wheel scroll, Mouse motion, Mouse button press, and some key down; 
+4. Update the view when user prompt to zoom in and out, drag. 
+
+<u>Assertions:</u>
+
+1. All the arguments are valid;
+
+<u>Test cases:</u>
+
+​	C1:
+
+​			Input: Valid arguments;
+
+​			Expected result: The map was draw on the window, and user can zoom in and out, drag to move, and quit.
 
 # Schedule
 
