@@ -24,6 +24,15 @@ char *fileName;
 long double length;
 
 
+/* void run(char *filename, int flag)
+ * ---------------------------------
+ * Runs the program.
+ *
+ * filename: The name of the file to be read.
+ * flag: The flag to indicate if user want to show the map
+ *
+ * returns: void
+ */
 void run(char *filename, int flag) {
     printf("startPoint: %d\n", startPoint);
     printf("endPoint: %d\n", endPoint);
@@ -66,6 +75,13 @@ void run(char *filename, int flag) {
 
 }
 
+/* void on_submit(uiButton *b, void *data)
+ * --------------------------------------
+ * Called when the submit button is clicked.
+ *
+ * b: The button that was clicked.
+ * data: The data passed to uiButtonOnClicked().
+ * */
 void on_submit(uiButton *b, void *data) {
 
     startPoint = atoi(uiEntryText(e1));
@@ -86,10 +102,16 @@ void on_submit(uiButton *b, void *data) {
     char *lenStr = malloc(sizeof(char) * 100);
     sprintf(lenStr, "%.2Lf", length);
 
-    uiLabelSetText(len, "Length: ");
     uiLabelSetText(len, lenStr);
 }
 
+/* void show_map(uiButton *b, void *data)
+ * ------------------------------------
+ * Called when the show map button is clicked.
+ *
+ * b: The button that was clicked.
+ * data: The data passed to uiButtonOnClicked().
+ * */
 void show_map(uiButton *b, void *data) {
     startPoint = atoi(uiEntryText(e1));
     endPoint = atoi(uiEntryText(e2));
@@ -109,16 +131,36 @@ void show_map(uiButton *b, void *data) {
     uiControlDestroy(data);
 }
 
+/* void on_select(uiRadioButtons *b, void *data)
+ * --------------------------------------------
+ * Called when the radio button is selected.
+ *
+ * b: The radio button that was selected.
+ * data: The data passed to uiRadioButtonsOnSelected().
+ * */
 void on_select(uiRadioButtons *r, void *data) {
     algo = uiRadioButtonsSelected(r);
     printf("algo: %d\n", algo);
 }
 
+/* void on_close(uiWindow *w, void *data)
+ * ------------------------------------
+ * Called when the window is closed.
+ *
+ * w: The window that was closed.
+ * data: The data passed to uiWindowOnClosing().
+ *
+ * */
 int on_close(uiWindow *w, void *data) {
     uiQuit();
     exit(0);
 }
 
+/* void promptInput()
+ * -----------------
+ * Prompts the user for input.
+ *
+ * */
 void promptInput() {
     uiInitOptions o;
     const char *err;
@@ -195,10 +237,11 @@ void promptInput() {
                  1, 1,
                  0, 0);
 
-    l = uiNewLabel("Length");
+    l = uiNewLabel("Length:");
     uiGridAppend(g, uiControl(l), 0, 30, 1, 1,
                  1, 1,
                  0, 0);
+
     len = uiNewLabel("");
     uiGridAppend(g, uiControl(len), 1, 30, 1, 1,
                  1, 1,
