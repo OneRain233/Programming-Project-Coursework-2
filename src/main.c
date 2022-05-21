@@ -8,6 +8,17 @@
 #include "interface.h"
 
 
+/* int main(int argc, char *argv[])
+ * --------------------------------
+ * This is the main function of the program.
+ *
+ * Parameters:
+ *
+ *  argc: The number of arguments passed to the program.
+ *  argv: The arguments passed to the program.
+ *
+ *  Returns: 0 on success, -1 on failure.
+ */
 int main(int argc, char *argv[]) {
     char *filename = "bin/Final_Map.map";
     if (argc == 1) {

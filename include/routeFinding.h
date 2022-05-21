@@ -29,6 +29,6 @@ int getNodeCnt();
 int *getPath();
 long double *bellman(int startPoint);
 long double *getDist();
-void updatePath(int startPoint);
+void updatePath(int startPoint, int algo);
 
 #endif //CWK_DIJ_H

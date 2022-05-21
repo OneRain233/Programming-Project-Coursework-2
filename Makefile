@@ -1,4 +1,4 @@
-EXE = bin/main
+EXE = bin/RouteFinding
 SRC = src/main.c src/visualization.c src/routeFinding.c src/interface.c
 LINKS = -lSDL2 -lui
 INCDIR = -I/usr/include/SDL2

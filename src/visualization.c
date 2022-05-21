@@ -7,8 +7,8 @@
 #include "SDL2/SDL.h"
 
 
-#define SCREEN_WIDTH 2560
-#define SCREEN_HEIGHT 1440
+#define SCREEN_WIDTH 1280
+#define SCREEN_HEIGHT 720
 
 int begin;
 int end;
@@ -242,7 +242,7 @@ highlight(SDL_Window *window, SDL_Renderer *renderer, int NodeIndex, Node *nodes
  */
 int visualize(SDL_Window *window, SDL_Renderer *renderer,
               Node *nodes, int *path, int node_cnt, long double baseX,
-              long double baseY, int endPoint) {
+              long double baseY, int endPoint, int algo) {
     int quit = 0;
     long double offsetX = 0;
     long double offsetY = 0;
@@ -307,7 +307,7 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
                     highlight(window, renderer, index, nodes, baseX, baseY, offsetX, offsetY, scale, pointSize);
                     end = index;
 
-                    updatePath(begin);
+                    updatePath(begin, algo);
                     route = getPath();
                     update(window, renderer, nodes, route, node_cnt, baseX, baseY, end, offsetX, offsetY, scale,
                            pointSize);

@@ -70,7 +70,7 @@ void run(char *filename, int flag) {
         }
     }
     if (flag) {
-        visualize(window, renderer, nodes, path, getNodeCnt(), minLat, minLon, endPoint);
+        visualize(window, renderer, nodes, path, getNodeCnt(), minLat, minLon, endPoint, algo);
     }
 
 }

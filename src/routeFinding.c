@@ -322,11 +322,15 @@ long double *getDist() {
  * update the shortest path from startPoint to all other nodes
  * startPoint: the start point of the path
  */
-void updatePath(int startPoint) {
+void updatePath(int startPoint, int algo) {
     for (int i = 0; i < nodeCnt; i++) {
         dist[i] = 10000000.0;
         path[i] = -1;
     }
-    dijkstra(startPoint);
+    if (algo == 0) {
+        dijkstra(startPoint);
+    } else if (algo == 1) {
+        bellman(startPoint);
+    }
 
 }
