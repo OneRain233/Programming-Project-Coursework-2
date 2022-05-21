@@ -28,9 +28,9 @@ Used to find the shortest way of the graph
 
 | Name                                                  | Description                            |
 | ----------------------------------------------------- | -------------------------------------- |
-| int dijInit(char *filename)                           | Used to initialize the Dijkstra        |
-| int readNode(char *filename)                          | Used to read nodes from the map        |
-| int readLink(char *filename);                         | Used to read links from the map        |
+| int dijInit(char *fileName)                           | Used to initialize the Dijkstra        |
+| int readNode(char *fileName)                          | Used to read nodes from the map        |
+| int readLink(char *fileName);                         | Used to read links from the map        |
 | int insertEdge(int index, int to, long double weight) | Used to add edges to the adjacent list |
 | long double *dijkstra(int startPoint);                | Used to find the shortest route        |
 | long double *bellman(int startPoint);                 | Used to find the shortest route        |
@@ -60,7 +60,7 @@ For the system testing, it means that I should test the complete system which me
 
 ### Tests cases
 
-**Function** : `int dijInit(char *filename);`
+**Function** : `int dijInit(char *fileName);`
 
 <u>Expected behavior:</u>
 
@@ -88,16 +88,16 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function** : `int readNode(char *filename);`
+**Function** : `int readNode(char *fileName);`
 
 <u>Expected behavior:</u>
 
-1. Read the nodes from the given file whose file name is filename to the variable which stores the nodes.
+1. Read the nodes from the given file whose file name is fileName to the variable which stores the nodes.
 2. If success, return `the number of the nodes`, if fail, return `-1`;
 
 <u>Assertions:</u>
 
-1. The file name pointer `filename` is not NULL and the file exists.
+1. The file name pointer `fileName` is not NULL and the file exists.
 
 <u>Test cases:</u>
 
@@ -121,17 +121,17 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function** : `int readLink(char *filename);`
+**Function** : `int readLink(char *fileName);`
 
 <u>Expected behavior:</u>
 
-1. Read the links from the given file whose file name is `filename` to the variable that stores the edges.
+1. Read the links from the given file whose file name is `fileName` to the variable that stores the edges.
 1. Convert the given node id to a small id which will be used to find the shortest route.
 1. If success return `the number of edges`, if fail return `-1`
 
 <u>Assertions:</u>
 
-1. The file name pointer `filename` is not NULL
+1. The file name pointer `fileName` is not NULL
 
 <u>Test cases:</u>
 
@@ -155,7 +155,7 @@ For the system testing, it means that I should test the complete system which me
 
 
 
-**Function**: `int getNodesCnt(char *filename);`
+**Function**: `int getNodesCnt(char *fileName);`
 
 <u>Expected behavior:</u>
 
@@ -164,7 +164,7 @@ For the system testing, it means that I should test the complete system which me
 
 <u>Assertions:</u>
 
-1. The file name pointer `filename` is not NULL
+1. The file name pointer `fileName` is not NULL
 
 <u>Test cases:</u>
 

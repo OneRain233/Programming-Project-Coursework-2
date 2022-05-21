@@ -213,7 +213,7 @@ highlight(SDL_Window *window, SDL_Renderer *renderer, int NodeIndex, Node *nodes
     calcPosition(x_pos, y_pos, x_pos_temp, y_pos_temp, baseX, baseY, offsetX, offsetY, scale);
     int x = (int) *x_pos_temp;
     int y = (int) *y_pos_temp;
-    SDL_Rect rect = {y, x, (int) pointSize + 10, (int) pointSize + 10};
+    SDL_Rect rect = {y, x, (int) pointSize, (int) pointSize};
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
     SDL_RenderFillRect(renderer, &rect);
     SDL_RenderPresent(renderer);

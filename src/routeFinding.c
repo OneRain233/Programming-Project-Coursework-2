@@ -14,10 +14,10 @@ long double minLat = 1e8; // min latitude
 long double minLon = 1e8; // min longitude
 int edgeCnt = 0;
 
-/* int dijInit(char *filename)
+/* int dijInit(char *fileName)
  * -------------------------------
  * initialize the dijkstra algorithm
- * filename: the file name of the graph
+ * fileName: the file name of the graph
  * return: 0 if success, -1 if fail
  */
 int dijInit(char *filename) {
@@ -72,10 +72,10 @@ int insertEdge(int index, int to, long double weight) {
     return 1;
 }
 
-/* int getNodesCnt(char *filename)
+/* int getNodesCnt(char *fileName)
  * --------------------------------
  * get the number of nodes in the graph
- * filename: the file name of the graph
+ * fileName: the file name of the graph
  * return: the number of nodes in the graph
  */
 
@@ -97,10 +97,10 @@ int getNodesCnt(char *filename) {
     return tmpCnt;
 }
 
-/* int readNode(char *filename)
+/* int readNode(char *fileName)
  * ----------------------------
  * read the nodes from the graph
- * filename: the file name of the graph
+ * fileName: the file name of the graph
  * return: The number of nodes in the graph
  */
 int readNode(char *filename) {
@@ -147,10 +147,10 @@ int findNodeByName(int n) {
     return -1;
 }
 
-/* int readLink(char *filename)
+/* int readLink(char *fileName)
  * ---------------------------
  * read the link of the graph
- * filename: the file name of the graph
+ * fileName: the file name of the graph
  * return: the number of links in the graph
  */
 int readLink(char *filename) {
