@@ -1,5 +1,5 @@
 EXE = bin/main
-SRC = src/main.c src/visualization.c src/routeFinding.c
+SRC = src/main.c src/visualization.c src/routeFinding.c src/interface.c
 LINKS = -lSDL2 -lui
 INCDIR = -I/usr/include/SDL2
 all:

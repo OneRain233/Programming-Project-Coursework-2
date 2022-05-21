@@ -72,7 +72,7 @@ void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, lo
         calcPosition(nodes[i].lat, nodes[i].lon, x_pos, y_pos, baseX, baseY, offsetX, offsetY, scale);
         int x = (int) *x_pos;
         int y = (int) *y_pos;
-        SDL_Rect rect = {y, x, (int) pointSize, (int) pointSize};
+        SDL_Rect rect = {x, y, (int) pointSize, (int) pointSize};
         SDL_RenderFillRect(renderer, &rect);
 
         free(x_pos);
@@ -87,8 +87,8 @@ void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, lo
                          offsetY, scale);
             int x_next = (int) x_pos_next;
             int y_next = (int) y_pos_next;
-            SDL_RenderDrawLine(renderer, y + (int) (pointSize) / 2, x + (int) (pointSize) / 2,
-                               y_next + (int) (pointSize) / 2, x_next + (int) (pointSize) / 2);
+            SDL_RenderDrawLine(renderer, x + (int) (pointSize) / 2, y + (int) (pointSize) / 2,
+                               x_next + (int) (pointSize) / 2, y_next + (int) (pointSize) / 2);
             cur = cur->next;
         }
     }
@@ -108,9 +108,9 @@ void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, lo
         int y_prev = (int) prev_y;
         // red
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
-        SDL_RenderDrawLine(renderer, y_cur + (int) (pointSize) / 2, x_cur + (int) (pointSize) / 2,
-                           y_prev + (int) (pointSize) / 2,
-                           x_prev + (int) (pointSize) / 2);
+        SDL_RenderDrawLine(renderer, x_cur + (int) (pointSize) / 2, y_cur + (int) (pointSize) / 2,
+                           x_prev + (int) (pointSize) / 2,
+                           y_prev + (int) (pointSize) / 2);
         prev = cur;
         cur = path[cur];
     }
@@ -178,7 +178,7 @@ int findPoint(int x, int y, Node *nodes, int node_cnt, long double baseX, long d
         int y_cur = (int) *y_pos;
         free(x_pos);
         free(y_pos);
-        if (abs(x_cur - y) <= (int) (pointSize) && abs(x - y_cur) <= (int) (pointSize) / 2) {
+        if (abs(x_cur - x) <= (int) (pointSize) && abs(y - y_cur) <= (int) (pointSize) / 2) {
             return i;
         }
     }
@@ -213,7 +213,7 @@ highlight(SDL_Window *window, SDL_Renderer *renderer, int NodeIndex, Node *nodes
     calcPosition(x_pos, y_pos, x_pos_temp, y_pos_temp, baseX, baseY, offsetX, offsetY, scale);
     int x = (int) *x_pos_temp;
     int y = (int) *y_pos_temp;
-    SDL_Rect rect = {y, x, (int) pointSize, (int) pointSize};
+    SDL_Rect rect = {x, y, (int) pointSize, (int) pointSize};
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // red
     SDL_RenderFillRect(renderer, &rect);
     SDL_RenderPresent(renderer);
@@ -244,8 +244,8 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
               Node *nodes, int *path, int node_cnt, long double baseX,
               long double baseY, int endPoint) {
     int quit = 0;
-    long double offsetX = -200;
-    long double offsetY = -200;
+    long double offsetX = 0;
+    long double offsetY = 0;
     long double scale = 10;
     long double pointSize = 5;
     end = endPoint;
@@ -284,8 +284,8 @@ int visualize(SDL_Window *window, SDL_Renderer *renderer,
 
 
             if (event.type == SDL_MOUSEMOTION && event.motion.state == SDL_PRESSED) {
-                offsetY += event.motion.xrel;
-                offsetX += event.motion.yrel;
+                offsetX += event.motion.xrel;
+                offsetY += event.motion.yrel;
                 update(window, renderer, nodes, route, node_cnt, baseX, baseY, end, offsetX, offsetY, scale,
                        pointSize);
 
