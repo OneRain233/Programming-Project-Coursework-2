@@ -265,3 +265,12 @@ int getNodeCnt() {
 long double *getDist() {
     return dist;
 }
+
+void updatePath(int startPoint) {
+    for(int i = 0; i < nodeCnt; i++) {
+        dist[i] = 10000000.0;
+        path[i] = -1;
+    }
+    dijkstra(startPoint);
+
+}
