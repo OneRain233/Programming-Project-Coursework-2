@@ -14,6 +14,12 @@ long double minLat = 1e8; // min latitude
 long double minLon = 1e8; // min longitude
 int edgeCnt = 0;
 
+/* int dijInit(char *filename)
+ * -------------------------------
+ * initialize the dijkstra algorithm
+ * filename: the file name of the graph
+ * return: 0 if success, -1 if fail
+ */
 int dijInit(char *filename) {
 
     int N = getNodesCnt(filename);
@@ -36,7 +42,14 @@ int dijInit(char *filename) {
     return 1;
 }
 
-
+/* int insertEdge(int index, int to, long double weight)
+ * -----------------------------------------------------
+ * insert an edge to the graph
+ * index: the index of the node
+ * to: the index of the node to
+ * weight: the weight of the edge
+ * return: 1 if success, 0 if fail
+*/
 int insertEdge(int index, int to, long double weight) {
     Node *p = &nodes[index];
     if (p == NULL) {
@@ -59,6 +72,13 @@ int insertEdge(int index, int to, long double weight) {
     return 1;
 }
 
+/* int getNodesCnt(char *filename)
+ * --------------------------------
+ * get the number of nodes in the graph
+ * filename: the file name of the graph
+ * return: the number of nodes in the graph
+ */
+
 int getNodesCnt(char *filename) {
     int tmpCnt = 0;
     FILE *fp = fopen(filename, "r");
@@ -77,6 +97,12 @@ int getNodesCnt(char *filename) {
     return tmpCnt;
 }
 
+/* int readNode(char *filename)
+ * ----------------------------
+ * read the nodes from the graph
+ * filename: the file name of the graph
+ * return: The number of nodes in the graph
+ */
 int readNode(char *filename) {
     int init = dijInit(filename);
     if (init == -1) {
@@ -106,6 +132,12 @@ int readNode(char *filename) {
     return nodeCnt;
 }
 
+/* int findNodeByName(int n)
+ * ------------------------
+ * find the index of the node by name
+ * n: the name of the node
+ * return: the index of the node
+ */
 int findNodeByName(int n) {
     for (int i = 0; i < nodeCnt; i++) {
         if (nodes[i].id == n) {
@@ -115,29 +147,12 @@ int findNodeByName(int n) {
     return -1;
 }
 
-int findNodeByIndex(int idx) { return nodes[idx].id; }
-
-void displayNode() {
-    for (int i = 0; i < nodeCnt; i++) {
-        fprintf(stdout, "%d ", nodes[i].id);
-    }
-    fprintf(stdout, "\n");
-}
-
-void displayMap() {
-    for (int i = 0; i < nodeCnt; i++) {
-        fprintf(stdout, "%d ", nodes[i].id);
-        Edge *p = nodes[i].head;
-        while (p != NULL) {
-            fprintf(stdout, "%d ", p->to);
-            p = p->next;
-        }
-
-        printf("\n");
-    }
-}
-
-
+/* int readLink(char *filename)
+ * ---------------------------
+ * read the link of the graph
+ * filename: the file name of the graph
+ * return: the number of links in the graph
+ */
 int readLink(char *filename) {
     FILE *fp = fopen(filename, "r");
     if (fp == NULL) {
@@ -179,6 +194,12 @@ int readLink(char *filename) {
 
 }
 
+/* long double *dijkstra(int startPoint)
+ * -------------------------------
+ * find the shortest path from startPoint to all other nodes
+ * startPoint: the start point of the path
+ * return: the shortest path from startPoint to all other nodes
+ */
 long double *dijkstra(int startPoint) {
     if (startPoint < 0) {
         return NULL;
@@ -207,12 +228,16 @@ long double *dijkstra(int startPoint) {
             e = e->next;
         }
     }
-//    for (int i = 0; i < nodeCnt; i++) {
-//        printf("%Lf ", dist[i]);
-//    }
     return dist;
 }
 
+/* long double bellman(int startPoint)
+ * -------------------------------
+ * find the shortest path from startPoint to all other nodes
+ *
+ * startPoint: the start point of the path
+ * return: the shortest path from startPoint to all other nodes
+ */
 long double *bellman(int startPoint) {
     if (startPoint < 0) {
         return NULL;
@@ -241,6 +266,11 @@ long double *bellman(int startPoint) {
     return dist;
 }
 
+/* void showPath(int endPoint)
+ * -------------------------------
+ * show the shortest path from startPoint to endPoint
+ * endPoint: the end point of the path
+ */
 void showPath(int endPoint) {
     int cur = endPoint;
     while (cur != -1) {
@@ -250,24 +280,50 @@ void showPath(int endPoint) {
     printf("\n");
 }
 
+/* int *getPath()
+ * -------------------------------
+ * get the shortest path from startPoint to endPoint
+ * return: the shortest path from startPoint to endPoint
+ */
 int *getPath() {
     return path;
 }
 
+/* Node *getNodes()
+ * -------------------------------
+ * get the nodes
+ * return: the nodes
+ */
 Node *getNodes() {
     return nodes;
 }
 
+/* int getNodeCnt()
+ * -------------------------------
+ * get the node count
+ * return: the node count
+ *
+ */
 int getNodeCnt() {
     return nodeCnt;
 }
 
+/* long double *getDist()
+ * -------------------------------
+ * get the distance
+ * return: the distance
+ */
 long double *getDist() {
     return dist;
 }
 
+/* void updatePath(int startPoint)
+ * -------------------------------
+ * update the shortest path from startPoint to all other nodes
+ * startPoint: the start point of the path
+ */
 void updatePath(int startPoint) {
-    for(int i = 0; i < nodeCnt; i++) {
+    for (int i = 0; i < nodeCnt; i++) {
         dist[i] = 10000000.0;
         path[i] = -1;
     }

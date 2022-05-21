@@ -14,7 +14,25 @@ int begin;
 int end;
 int *route;
 
-
+/* void calcPosition(long double x, long double y, long double *x_pos, long double *y_pos, long double baseX,
+ *                  long double baseY, long double offsetX, long double offsetY, long double scale)
+ *
+ * ---------------------------------------------------------------------------------------------------------------------
+ * This function calculates the position of the point on the screen based on the base position, the offset, and the
+ * scale.
+ *
+ * x: The x coordinate of the point
+ * y: The y coordinate of the point
+ * x_pos: The x position of the point on the screen
+ * y_pos: The y position of the point on the screen
+ * baseX: The x coordinate of the base point
+ * baseY: The y coordinate of the base point
+ * offsetX: The x offset of the base point
+ * offsetY: The y offset of the base point
+ * scale: The scale of the base point
+ *
+ * return: void
+*/
 void calcPosition(long double x, long double y, long double *x_pos, long double *y_pos, long double baseX,
                   long double baseY, long double offsetX, long double offsetY, long double scale) {
     long double x_pos_temp = x - baseX;
@@ -23,6 +41,25 @@ void calcPosition(long double x, long double y, long double *x_pos, long double 
     *y_pos = y_pos_temp * 1e6 / scale + offsetY;
 }
 
+/* void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, long double baseX, long double baseY,
+ *          int endPoint, long double offsetX, long double offsetY, long double scale, long double pointSize)
+ * ---------------------------------------------------------------------------------------------------------------------
+ * This function draws the nodes and the path on the screen.
+ *
+ * renderer: The renderer of the screen
+ * nodes: The array of nodes
+ * path: The array of path
+ * node_cnt: The number of nodes
+ * baseX: The x coordinate of the base point
+ * baseY: The y coordinate of the base point
+ * endPoint: The index of the end point
+ * offsetX: The x offset of the base point
+ * offsetY: The y offset of the base point
+ * scale: The scale of the base point
+ * pointSize: The size of the point
+ *
+ * return: void
+ * */
 void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, long double baseX, long double baseY,
           int endPoint, long double offsetX, long double offsetY, long double scale, long double pointSize) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // white
@@ -79,6 +116,30 @@ void draw(SDL_Renderer *renderer, Node *nodes, const int *path, int node_cnt, lo
     }
 }
 
+
+/* void update(SDL_Window *window, SDL_Renderer *renderer,
+ *           Node *nodes, int *path, int node_cnt, long double baseX,
+ *           long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
+ *           long double pointSize)
+ * ---------------------------------------------------------------------------------------------------------------------
+ * Description:
+ * This function updates the screen with the new path
+ *
+ * window: The window to draw on
+ * renderer: The renderer to draw on
+ * nodes: The nodes to draw
+ * path: The path to draw
+ * node_cnt: The number of nodes
+ * baseX: The base x coordinate
+ * baseY: The base y coordinate
+ * endPoint: The end point
+ * offsetX: The offset x coordinate
+ * offsetY: The offset y coordinate
+ * scale: The scale of the map
+ * pointSize: The size of the points
+ *
+ * return: void
+ */
 void update(SDL_Window *window, SDL_Renderer *renderer,
             Node *nodes, int *path, int node_cnt, long double baseX,
             long double baseY, int endPoint, long double offsetX, long double offsetY, long double scale,
@@ -88,6 +149,25 @@ void update(SDL_Window *window, SDL_Renderer *renderer,
     SDL_RenderPresent(renderer);
 }
 
+/* int findPoint(int x, int y, Node *nodes, int node_cnt, long double baseX, long double baseY, long double offsetX,
+ *             long double offsetY, long double scale, long double pointSize)
+ * ---------------------------------------------------------------------------------------------------------------------
+ * Description:
+ * This function finds the point that is clicked on
+ *
+ * x: The x coordinate of the click
+ * y: The y coordinate of the click
+ * nodes: The nodes to draw
+ * node_cnt: The number of nodes
+ * baseX: The base x coordinate
+ * baseY: The base y coordinate
+ * offsetX: The offset x coordinate
+ * offsetY: The offset y coordinate
+ * scale: The scale of the map
+ * pointSize: The size of the points
+ *
+ * return: The point that is clicked on
+ */
 int findPoint(int x, int y, Node *nodes, int node_cnt, long double baseX, long double baseY, long double offsetX,
               long double offsetY, long double scale, long double pointSize) {
     for (int i = 0; i < node_cnt; i++) {
@@ -104,6 +184,25 @@ int findPoint(int x, int y, Node *nodes, int node_cnt, long double baseX, long d
     }
 }
 
+/* void highlight(SDL_Window *window, SDL_Renderer *renderer, int NodeIndex, Node *nodes, long double baseX, long double baseY,
+ long double offsetX, long double offsetY, long double scale, long double pointSize)
+ * ---------------------------------------------------------------------------------------------------------------------
+ * Description:
+ * This function highlights the point that is clicked on
+ *
+ * window: The window to draw on
+ * renderer: The renderer to draw on
+ * NodeIndex: The index of the point that is clicked on
+ * nodes: The nodes to draw
+ * baseX: The base x coordinate
+ * baseY: The base y coordinate
+ * offsetX: The offset x coordinate
+ * offsetY: The offset y coordinate
+ * scale: The scale of the map
+ * pointSize: The size of the points
+ *
+ * return: void
+ */
 void
 highlight(SDL_Window *window, SDL_Renderer *renderer, int NodeIndex, Node *nodes, long double baseX, long double baseY,
           long double offsetX, long double offsetY, long double scale, long double pointSize) {
@@ -123,6 +222,24 @@ highlight(SDL_Window *window, SDL_Renderer *renderer, int NodeIndex, Node *nodes
 
 }
 
+/* int visualize(SDL_Window *window, SDL_Renderer *renderer,
+              Node *nodes, int *path, int node_cnt, long double baseX,
+              long double baseY, int endPoint)
+ * ---------------------------------------------------------------------------------------------------------------------
+ * Description:
+ * This function visualizes the path
+ *
+ * window: The window to draw on
+ * renderer: The renderer to draw on
+ * nodes: The nodes to draw
+ * path: The path to draw
+ * node_cnt: The number of nodes
+ * baseX: The base x coordinate
+ * baseY: The base y coordinate
+ * endPoint: The end point of the path
+ *
+ * return: 1 if the user wants to quit, 0 otherwise
+ */
 int visualize(SDL_Window *window, SDL_Renderer *renderer,
               Node *nodes, int *path, int node_cnt, long double baseX,
               long double baseY, int endPoint) {

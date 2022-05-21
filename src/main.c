@@ -8,9 +8,11 @@
 #include "../include/visualization.h"
 #include <ui.h>
 
-int startPoint = -8847;
-int endPoint = -8849;
+int startPoint = -1;
+int endPoint = -1;
 int algo = 0;
+uiEntry *e1;
+uiEntry *e2;
 
 void run(char *filename) {
     printf("startPoint: %d\n", startPoint);
@@ -51,27 +53,16 @@ void run(char *filename) {
 }
 
 void on_submit(uiButton *b, void *data) {
-    if (startPoint == -1 || endPoint == -1) {
-        return;
-    }
+
+    startPoint = atoi(uiEntryText(e1));
+    endPoint = atoi(uiEntryText(e2));
+
     startPoint = findNodeByName(startPoint);
     endPoint = findNodeByName(endPoint);
     uiQuit();
     uiControlDestroy(data);
-
 }
 
-void on_change_startPoint(uiEntry *e, void *data) {
-    // get the start and end point
-    startPoint = atoi(uiEntryText(e));
-    printf("startPoint: %d\n", startPoint);
-}
-
-void on_change_endPoint(uiEntry *e, void *data) {
-    // get the start and end point
-    endPoint = atoi(uiEntryText(e));
-    printf("endPoint: %d\n", endPoint);
-}
 
 void on_select(uiRadioButtons *r, void *data) {
     algo = uiRadioButtonsSelected(r);
@@ -91,6 +82,7 @@ void promptInput() {
     uiGrid *g;
     uiLabel *l;
     uiButton *b;
+    uiButton *b2;
 
     memset(&o, 0, sizeof(uiInitOptions));
     uiInit(&o);
@@ -107,23 +99,23 @@ void promptInput() {
                  0, 0);
 
     //input box
-    uiEntry *e = uiNewEntry();
-    uiEntrySetText(e, "");
-    uiGridAppend(g, uiControl(e), 1, 0, 1, 1,
+    e1 = uiNewEntry();
+    uiEntrySetText(e1, "");
+    uiGridAppend(g, uiControl(e1), 1, 0, 1, 1,
                  1, 1,
                  0, 0);
-    uiEntryOnChanged(e, on_change_startPoint, NULL);
+//    uiEntryOnChanged(e1, on_change_startPoint, NULL);
     l = uiNewLabel("End Point");
     uiGridAppend(g, uiControl(l), 0, 1, 1, 1,
                  1, 1,
                  0, 0);
     //input box
-    uiEntry *e2 = uiNewEntry();
+    e2 = uiNewEntry();
     uiEntrySetText(e2, "");
     uiGridAppend(g, uiControl(e2), 1, 1, 1, 1,
                  1, 1,
                  0, 0);
-    uiEntryOnChanged(e2, on_change_endPoint, NULL);
+//    uiEntryOnChanged(e2, on_change_endPoint, NULL);
 
     // algorithm selection
     l = uiNewLabel("Algorithm");
@@ -147,8 +139,15 @@ void promptInput() {
         entry[i] = malloc(sizeof(void *) * 2);
     }
 
+
     uiButtonOnClicked(b, on_submit, w);
     uiGridAppend(g, uiControl(b), 0, 3, 2, 1,
+                 1, 1,
+                 0, 0);
+
+    b2 = uiNewButton("Select From Map");
+    uiButtonOnClicked(b2, on_submit, w);
+    uiGridAppend(g, uiControl(b2), 0, 4, 2, 1,
                  1, 1,
                  0, 0);
 
@@ -173,11 +172,10 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     FILE *check = fopen(filename, "r");
-    if(check == NULL) {
+    if (check == NULL) {
         fprintf(stderr, "File \"%s\" Not found\n", filename);
         exit(1);
     }
-
 
     dijInit(filename);
     readNode(filename);
